@@ -34,7 +34,7 @@
 * jQuery
 * Bootstrap
 
-##数据库关系图
+## 数据库关系图
 ![输入图片说明](https://gitee.com/uploads/images/2018/0412/194935_92258b3b_736072.png "Diagram 1.png")
 
 ## 部分截图
