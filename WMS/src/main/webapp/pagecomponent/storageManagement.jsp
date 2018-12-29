@@ -4,7 +4,6 @@
 <script>
 	var search_type_storage = "searchAll";
 	var search_keyWord = "所有";
-	var search_repository = "";
 	var select_goodsID;
 	var select_repositoryID;
 
@@ -59,7 +58,6 @@
 			limit : params.limit,
 			offset : params.offset,
 			searchType : search_type_storage,
-			repositoryBelong : search_repository,
 			keyword : search_keyWord
 		}
 		return temp;
@@ -71,11 +69,6 @@
 				.bootstrapTable(
 						{
 							columns : [
-									{
-										field : 'goodsID',
-										title : '材料ID',
-										sortable: true
-									},
 									{
 										field : 'goodsName',
 										title : '材料名称'
@@ -95,7 +88,7 @@
 										visible : false
 									},
 									{
-										field : 'repositoryID',
+										field : 'supplierName',
 										title : '所属公司'
 									},
 									{
@@ -430,7 +423,6 @@
 		$('#export_storage_download').click(function(){
 			var data = {
 				searchType : search_type_storage,
-				repositoryBelong : search_repository,
 				keyword : search_keyWord
 			}
 			var url = "storageManage/exportStorageRecord?" + $.param(data)

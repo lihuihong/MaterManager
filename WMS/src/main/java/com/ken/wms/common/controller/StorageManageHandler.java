@@ -2,11 +2,14 @@ package com.ken.wms.common.controller;
 
 import com.ken.wms.common.service.Interface.StockRecordManageService;
 import com.ken.wms.common.service.Interface.StorageManageService;
+import com.ken.wms.common.service.Interface.SupplierManageService;
 import com.ken.wms.common.util.Response;
 import com.ken.wms.common.util.ResponseFactory;
 import com.ken.wms.domain.Storage;
+import com.ken.wms.domain.Supplier;
 import com.ken.wms.domain.UserInfoDTO;
 import com.ken.wms.exception.StorageManageServiceException;
+import com.ken.wms.exception.SupplierManageServiceException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -35,6 +38,9 @@ public class StorageManageHandler {
 
     @Autowired
     private StorageManageService storageManageService;
+
+    @Autowired
+    private SupplierManageService supplierManageService;
     @Autowired
     private StockRecordManageService stockRecordManageService;
 
@@ -58,26 +64,13 @@ public class StorageManageHandler {
 
         switch (searchType) {
             case SEARCH_ALL:
-                if (StringUtils.isNumeric(repositoryBelong)) {
-                    Integer repositoryID = Integer.valueOf(repositoryBelong);
-                    queryResult = storageManageService.selectAll(repositoryID, offset, limit);
-                } else {
-                    queryResult = storageManageService.selectAll(-1, offset, limit);
-                }
+                queryResult = storageManageService.selectAll(-1, offset, limit);
                 break;
             case SEARCH_BY_GOODS_TYPE:
-                if (StringUtils.isNumeric(repositoryBelong)) {
-                    Integer repositoryID = Integer.valueOf(repositoryBelong);
-                    queryResult = storageManageService.selectByGoodsType(keyword, repositoryID, offset, limit);
-                } else
-                    queryResult = storageManageService.selectByGoodsType(keyword, -1, offset, limit);
+                queryResult = storageManageService.selectByGoodsType(keyword, -1, offset, limit);
                 break;
             case SEARCH_BY_GOODS_NAME:
-                if (StringUtils.isNumeric(repositoryBelong)) {
-                    Integer repositoryID = Integer.valueOf(repositoryBelong);
-                    queryResult = storageManageService.selectByGoodsName(keyword, repositoryID, offset, limit);
-                } else
-                    queryResult = storageManageService.selectByGoodsName(keyword, -1, offset, limit);
+                queryResult = storageManageService.selectByGoodsName(keyword, -1, offset, limit);
                 break;
             default:
                 // do other thing
@@ -154,6 +147,17 @@ public class StorageManageHandler {
             Map<String, Object> queryResult = query(searchType, keyword, repositoryID.toString(), offset, limit);
             if (queryResult != null) {
                 rows = (List<Storage>) queryResult.get("data");
+
+                for(int i = 0;i < rows.size();i++){
+                    Integer id = rows.get(i).getRepositoryID();
+                    try {
+                        List<Supplier> suppliers  = (List<Supplier>) supplierManageService.selectById(id).get("data");
+                        rows.get(i).setSupplierName(suppliers.get(0).getName());
+                    } catch (SupplierManageServiceException e) {
+                        e.printStackTrace();
+                    }
+                }
+
                 total = (long) queryResult.get("total");
             }
         }

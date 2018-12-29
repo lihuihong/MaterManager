@@ -8,13 +8,22 @@ package com.ken.wms.domain;
  */
 public class Storage {
 
-	private Integer goodsID;// 货物ID
-	private String goodsName;// 货物名称
-	private String goodsSize;// 货物规格
-	private String goodsType;// 货物类型
-	private Double goodsValue;// 货物价值
-	private Integer repositoryID;// 仓库ID
+	private Integer goodsID;// 材料ID
+	private String goodsName;// 材料名称
+	private String goodsSize;// 材料规格
+	private String goodsType;// 材料类型
+	private Double goodsValue;// 材料价值
+	private Integer repositoryID;// 公司ID
+	private String supplierName;
 	private Long number;// 库存数量
+
+	public String getSupplierName() {
+		return supplierName;
+	}
+
+	public void setSupplierName(String supplierName) {
+		this.supplierName = supplierName;
+	}
 
 	public Integer getGoodsID() {
 		return goodsID;

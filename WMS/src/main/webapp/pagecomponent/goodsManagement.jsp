@@ -2,8 +2,8 @@
 	pageEncoding="UTF-8"%>
 
 <script>
-	var search_type_goods = "none";
-	var search_keyWord = "";
+	var search_type_goods = "searchAll";
+	var search_keyWord = "所有";
 	var selectID;
 
 	$(function() {
@@ -27,10 +27,7 @@
 			if (type == "所有") {
 				$("#search_input").attr("readOnly", "true");
 				search_type_goods = "searchAll";
-			} else if (type == "货物ID") {
-				$("#search_input").removeAttr("readOnly");
-				search_type_goods = "searchByID";
-			} else if (type == "货物名称") {
+			} else if (type == "材料名称") {
 				$("#search_input").removeAttr("readOnly");
 				search_type_goods = "searchByName";
 			} else {
@@ -68,25 +65,20 @@
 						{
 							columns : [
 									{
-										field : 'id',
-										title : '货物ID'
-									//sortable: true
-									},
-									{
 										field : 'name',
-										title : '货物名称'
+										title : '材料名称'
 									},
 									{
 										field : 'type',
-										title : '货物类型'
+										title : '材料类型'
 									},
 									{
 										field : 'size',
-										title : '货物尺寸'
+										title : '材料尺寸'
 									},
 									{
 										field : 'value',
-										title : '货物价值',
+										title : '材料价值',
 									},
 									{
 										field : 'operation',
@@ -161,14 +153,14 @@
 				goods_name : {
 					validators : {
 						notEmpty : {
-							message : '货物名称不能为空'
+							message : '材料名称不能为空'
 						}
 					}
 				},
 				goods_value : {
 					validators : {
 						notEmpty : {
-							message : '货物价值不能为空'
+							message : '材料价值不能为空'
 						}
 					}
 				}
@@ -176,7 +168,7 @@
 		})
 	}
 
-	// 编辑货物信息
+	// 编辑材料信息
 	function editGoodsAction() {
 		$('#edit_modal_submit').click(
 				function() {
@@ -209,10 +201,10 @@
 							var append = '';
 							if (response.result == "success") {
 								type = "success";
-								msg = "货物信息更新成功";
+								msg = "材料信息更新成功";
 							} else if (resposne == "error") {
 								type = "error";
-								msg = "货物信息更新失败"
+								msg = "材料信息更新失败"
 							}
 							showMsg(type, msg, append);
 							tableRefresh();
@@ -226,7 +218,7 @@
 				});
 	}
 
-	// 刪除货物信息
+	// 刪除材料信息
 	function deleteGoodsAction(){
 		$('#delete_confirm').click(function(){
 			var data = {
@@ -247,10 +239,10 @@
 					var append = '';
 					if(response.result == "success"){
 						type = "success";
-						msg = "货物信息删除成功";
+						msg = "材料信息删除成功";
 					}else{
 						type = "error";
-						msg = "货物信息删除失败";
+						msg = "材料信息删除失败";
 					}
 					showMsg(type, msg, append);
 					tableRefresh();
@@ -265,7 +257,7 @@
 		})
 	}
 
-	// 添加货物信息
+	// 添加材料信息
 	function addGoodsAction() {
 		$('#add_goods').click(function() {
 			$('#add_modal').modal("show");
@@ -292,10 +284,10 @@
 					var append = '';
 					if (response.result == "success") {
 						type = "success";
-						msg = "货物添加成功";
+						msg = "材料添加成功";
 					} else if (response.result == "error") {
 						type = "error";
-						msg = "货物添加失败";
+						msg = "材料添加失败";
 					}
 					showMsg(type, msg, append);
 					tableRefresh();
@@ -319,7 +311,7 @@
 	var import_step = 1;
 	var import_start = 1;
 	var import_end = 3;
-	// 导入货物信息
+	// 导入材料信息
 	function importGoodsAction() {
 		$('#import_goods').click(function() {
 			$('#import_modal').modal("show");
@@ -371,8 +363,8 @@
 				success : function(data, status){
 					var total = 0;
 					var available = 0;
-					var msg1 = "货物信息导入成功";
-					var msg2 = "货物信息导入失败";
+					var msg1 = "材料信息导入成功";
+					var msg2 = "材料信息导入失败";
 					var info;
 
 					$('#import_progress_bar').addClass("hide");
@@ -402,7 +394,7 @@
 		})
 	}
 
-	// 导出货物信息
+	// 导出材料信息
 	function exportGoodsAction() {
 		$('#export_goods').click(function() {
 			$('#export_modal').modal("show");
@@ -419,7 +411,7 @@
 		})
 	}
 
-	// 导入货物模态框重置
+	// 导入材料模态框重置
 	function importModalReset(){
 		var i;
 		for(i = import_start; i <= import_end; i++){
@@ -463,7 +455,7 @@
 </script>
 <div class="panel panel-default">
 	<ol class="breadcrumb">
-		<li>货物信息管理</li>
+		<li>材料信息管理</li>
 	</ol>
 	<div class="panel-body">
 		<div class="row">
@@ -471,11 +463,10 @@
 				<div class="btn-group">
 					<button class="btn btn-default dropdown-toggle"
 						data-toggle="dropdown">
-						<span id="search_type">查询方式</span> <span class="caret"></span>
+						<span id="search_type">所有</span> <span class="caret"></span>
 					</button>
 					<ul class="dropdown-menu" role="menu">
-						<li><a href="javascript:void(0)" class="dropOption">货物ID</a></li>
-						<li><a href="javascript:void(0)" class="dropOption">货物名称</a></li>
+						<li><a href="javascript:void(0)" class="dropOption">材料名称</a></li>
 						<li><a href="javascript:void(0)" class="dropOption">所有</a></li>
 					</ul>
 				</div>
@@ -483,8 +474,8 @@
 			<div class="col-md-9 col-sm-9">
 				<div>
 					<div class="col-md-3 col-sm-4">
-						<input id="search_input" type="text" class="form-control"
-							placeholder="货物ID">
+						<input id="search_input" type="text" class="form-control" value="所有" readonly
+							placeholder="所有">
 					</div>
 					<div class="col-md-2 col-sm-2">
 						<button id="search_button" class="btn btn-success">
@@ -498,7 +489,7 @@
 		<div class="row" style="margin-top: 25px">
 			<div class="col-md-5">
 				<button class="btn btn-sm btn-default" id="add_goods">
-					<span class="glyphicon glyphicon-plus"></span> <span>添加货物信息</span>
+					<span class="glyphicon glyphicon-plus"></span> <span>添加材料信息</span>
 				</button>
 				<button class="btn btn-sm btn-default" id="import_goods">
 					<span class="glyphicon glyphicon-import"></span> <span>导入</span>
@@ -518,7 +509,7 @@
 	</div>
 </div>
 
-<!-- 添加货物信息模态框 -->
+<!-- 添加材料信息模态框 -->
 <div id="add_modal" class="modal fade" table-index="-1" role="dialog"
 	aria-labelledby="myModalLabel" aria-hidden="true"
 	data-backdrop="static">
@@ -527,7 +518,7 @@
 			<div class="modal-header">
 				<button class="close" type="button" data-dismiss="modal"
 					aria-hidden="true">&times;</button>
-				<h4 class="modal-title" id="myModalLabel">添加货物信息</h4>
+				<h4 class="modal-title" id="myModalLabel">添加材料信息</h4>
 			</div>
 			<div class="modal-body">
 				<!-- 模态框的内容 -->
@@ -537,35 +528,35 @@
 						<form class="form-horizontal" role="form" id="goods_form"
 							style="margin-top: 25px">
 							<div class="form-group">
-								<label for="" class="control-label col-md-4 col-sm-4"> <span>货物名称：</span>
+								<label for="" class="control-label col-md-4 col-sm-4"> <span>材料名称：</span>
 								</label>
 								<div class="col-md-8 col-sm-8">
 									<input type="text" class="form-control" id="goods_name"
-										name="goods_name" placeholder="货物名称">
+										name="goods_name" placeholder="材料名称">
 								</div>
 							</div>
 							<div class="form-group">
-								<label for="" class="control-label col-md-4 col-sm-4"> <span>货物类型：</span>
+								<label for="" class="control-label col-md-4 col-sm-4"> <span>材料类型：</span>
 								</label>
 								<div class="col-md-8 col-sm-8">
 									<input type="text" class="form-control" id="goods_type"
-										name="goods_type" placeholder="货物类型">
+										name="goods_type" placeholder="材料类型">
 								</div>
 							</div>
 							<div class="form-group">
-								<label for="" class="control-label col-md-4 col-sm-4"> <span>货物尺寸：</span>
+								<label for="" class="control-label col-md-4 col-sm-4"> <span>材料尺寸：</span>
 								</label>
 								<div class="col-md-8 col-sm-8">
 									<input type="text" class="form-control" id="goods_size"
-										name="goods_size" placeholder="货物尺寸">
+										name="goods_size" placeholder="材料尺寸">
 								</div>
 							</div>
 							<div class="form-group">
-								<label for="" class="control-label col-md-4 col-sm-4"> <span>货物价值：</span>
+								<label for="" class="control-label col-md-4 col-sm-4"> <span>材料价值：</span>
 								</label>
 								<div class="col-md-8 col-sm-8">
 									<input type="text" class="form-control" id="goods_value"
-										name="goods_value" placeholder="货物价值">
+										name="goods_value" placeholder="材料价值">
 								</div>
 							</div>
 						</form>
@@ -585,7 +576,7 @@
 	</div>
 </div>
 
-<!-- 导入货物信息模态框 -->
+<!-- 导入材料信息模态框 -->
 <div class="modal fade" id="import_modal" table-index="-1" role="dialog"
 	aria-labelledby="myModalLabel" aria-hidden="true"
 	data-backdrop="static">
@@ -594,7 +585,7 @@
 			<div class="modal-header">
 				<button class="close" type="button" data-dismiss="modal"
 					aria-hidden="true">&times;</button>
-				<h4 class="modal-title" id="myModalLabel">导入货物信息</h4>
+				<h4 class="modal-title" id="myModalLabel">导入材料信息</h4>
 			</div>
 			<div class="modal-body">
 				<div id="step1">
@@ -602,7 +593,7 @@
 						<div class="col-md-1 col-sm-1"></div>
 						<div class="col-md-10 col-sm-10">
 							<div>
-								<h4>点击下面的下载按钮，下载货物信息电子表格</h4>
+								<h4>点击下面的下载按钮，下载材料信息电子表格</h4>
 							</div>
 							<div style="margin-top: 30px; margin-buttom: 15px">
 								<a class="btn btn-info"
@@ -619,7 +610,7 @@
 						<div class="col-md-1 col-sm-1"></div>
 						<div class="col-md-10 col-sm-10">
 							<div>
-								<h4>请按照货物信息电子表格中指定的格式填写需要添加的一个或多个货物信息</h4>
+								<h4>请按照材料信息电子表格中指定的格式填写需要添加的一个或多个材料信息</h4>
 							</div>
 							<div class="alert alert-info"
 								style="margin-top: 10px; margin-buttom: 30px">
@@ -634,7 +625,7 @@
 						<div class="col-md-8 col-sm-10">
 							<div>
 								<div>
-									<h4>请点击下面上传文件按钮，上传填写好的货物信息电子表格</h4>
+									<h4>请点击下面上传文件按钮，上传填写好的材料信息电子表格</h4>
 								</div>
 								<div style="margin-top: 30px; margin-buttom: 15px">
 									<span class="btn btn-info btn-file"> <span> <span
@@ -711,7 +702,7 @@
 	</div>
 </div>
 
-<!-- 导出货物信息模态框 -->
+<!-- 导出材料信息模态框 -->
 <div class="modal fade" id="export_modal" table-index="-1" role="dialog"
 	aria-labelledby="myModalLabel" aria-hidden="true"
 	data-backdrop="static">
@@ -720,7 +711,7 @@
 			<div class="modal-header">
 				<button class="close" type="button" data-dismiss="modal"
 					aria-hidden="true">&times;</button>
-				<h4 class="modal-title" id="myModalLabel">导出货物信息</h4>
+				<h4 class="modal-title" id="myModalLabel">导出材料信息</h4>
 			</div>
 			<div class="modal-body">
 				<div class="row">
@@ -729,8 +720,8 @@
 							style="width: 70px; height: 70px; margin-top: 20px;">
 					</div>
 					<div class="col-md-8 col-sm-8">
-						<h3>是否确认导出货物信息</h3>
-						<p>(注意：请确定要导出的货物信息，导出的内容为当前列表的搜索结果)</p>
+						<h3>是否确认导出材料信息</h3>
+						<p>(注意：请确定要导出的材料信息，导出的内容为当前列表的搜索结果)</p>
 					</div>
 				</div>
 			</div>
@@ -763,8 +754,8 @@
 							style="width: 70px; height: 70px; margin-top: 20px;">
 					</div>
 					<div class="col-md-8 col-sm-8">
-						<h3>是否确认删除该条货物信息</h3>
-						<p>(注意：若该货物已经有仓库进出库记录或有仓存记录，则该货物信息将不能删除成功。如需删除该货物的信息，请先确保该货物没有关联的仓库进出库记录或有仓存记录)</p>
+						<h3>是否确认删除该条材料信息</h3>
+						<p>(注意：若该材料已经有仓库进出库记录或有仓存记录，则该材料信息将不能删除成功。如需删除该材料的信息，请先确保该材料没有关联的仓库进出库记录或有仓存记录)</p>
 					</div>
 				</div>
 			</div>
@@ -780,7 +771,7 @@
 	</div>
 </div>
 
-<!-- 编辑货物信息模态框 -->
+<!-- 编辑材料信息模态框 -->
 <div id="edit_modal" class="modal fade" table-index="-1" role="dialog"
 	aria-labelledby="myModalLabel" aria-hidden="true"
 	data-backdrop="static">
@@ -789,7 +780,7 @@
 			<div class="modal-header">
 				<button class="close" type="button" data-dismiss="modal"
 					aria-hidden="true">&times;</button>
-				<h4 class="modal-title" id="myModalLabel">编辑货物信息</h4>
+				<h4 class="modal-title" id="myModalLabel">编辑材料信息</h4>
 			</div>
 			<div class="modal-body">
 				<!-- 模态框的内容 -->
@@ -799,37 +790,37 @@
 						<form class="form-horizontal" role="form" id="goods_form_edit"
 							style="margin-top: 25px">
 							<div class="form-group">
-								<label for="" class="control-label col-md-4 col-sm-4"> <span>货物名称：</span>
+								<label for="" class="control-label col-md-4 col-sm-4"> <span>材料名称：</span>
 								</label>
 								<div class="col-md-8 col-sm-8">
 									<input type="text" class="form-control" id="goods_name_edit"
-										name="goods_name" placeholder="货物名称">
+										name="goods_name" placeholder="材料名称">
 								</div>
 							</div>
 							<div class="form-group">
-								<label for="" class="control-label col-md-4 col-sm-4"> <span>货物类型：</span>
+								<label for="" class="control-label col-md-4 col-sm-4"> <span>材料类型：</span>
 								</label>
 								<div class="col-md-8 col-sm-8">
 									<input type="text" class="form-control"
 										id="goods_type_edit" name="goods_type"
-										placeholder="货物类型">
+										placeholder="材料类型">
 								</div>
 							</div>
 							<div class="form-group">
-								<label for="" class="control-label col-md-4 col-sm-4"> <span>货物尺寸：</span>
+								<label for="" class="control-label col-md-4 col-sm-4"> <span>材料尺寸：</span>
 								</label>
 								<div class="col-md-8 col-sm-8">
 									<input type="text" class="form-control" id="goods_size_edit"
-										name="goods_size" placeholder="货物尺寸">
+										name="goods_size" placeholder="材料尺寸">
 								</div>
 							</div>
 							<div class="form-group">
-								<label for="" class="control-label col-md-4 col-sm-4"> <span>货物价值：</span>
+								<label for="" class="control-label col-md-4 col-sm-4"> <span>材料价值：</span>
 								</label>
 								<div class="col-md-8 col-sm-8">
 									<input type="text" class="form-control"
 										id="goods_value_edit" name="goods_value"
-										placeholder="货物价值">
+										placeholder="材料价值">
 								</div>
 							</div>
 						</form>

@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 仓库管理员管理请求 Handler
+ * 用户管理请求 Handler
  *
  * @author Ken
  */
@@ -71,7 +71,7 @@ public class RepositoryAdminManageHandler {
     }
 
     /**
-     * 查询仓库管理员信息
+     * 查询用户信息
      *
      * @param searchType 查询类型
      * @param offset     分页偏移值
@@ -100,12 +100,11 @@ public class RepositoryAdminManageHandler {
             total = (long) queryResult.get("total");
         }
 
-        List<Supplier> suppliers = new ArrayList<>();
         for(int i = 0;i < rows.size();i++){
             Integer id = rows.get(i).getRepositoryBelongID();
             try {
-                List<Supplier> suppliers1  = (List<Supplier>) supplierManageService.selectById(id).get("data");
-                rows.get(i).setSupplierName(suppliers1.get(0).getName());
+                List<Supplier> suppliers  = (List<Supplier>) supplierManageService.selectById(id).get("data");
+                rows.get(i).setSupplierName(suppliers.get(0).getName());
             } catch (SupplierManageServiceException e) {
                 e.printStackTrace();
             }
@@ -139,11 +138,11 @@ public class RepositoryAdminManageHandler {
     }
 
     /**
-     * 查询指定 ID 的仓库管理员信息
+     * 查询指定 ID 的用户信息
      *
-     * @param repositoryAdminID 仓库管理员ID
+     * @param repositoryAdminID 用户ID
      * @return 返回一个map，其中：key 为 result 的值为操作的结果，包括：success 与 error；key 为 data
-     * 的值为仓库管理员信息
+     * 的值为用户信息
      */
     @RequestMapping(value = "getRepositoryAdminInfo", method = RequestMethod.GET)
     public
@@ -214,9 +213,9 @@ public class RepositoryAdminManageHandler {
     }
 
     /**
-     * 从文件中导入仓库管理员信息
+     * 从文件中导入用户信息
      *
-     * @param file 保存有仓库管理员信息的文件
+     * @param file 保存有用户信息的文件
      * @return 返回一个map，其中：key 为 result表示操作的结果，包括：success 与
      * error；key为total表示导入的总条数；key为available表示有效的条数
      */
@@ -248,7 +247,7 @@ public class RepositoryAdminManageHandler {
     }
 
     /**
-     * 导出仓库管理员信息到文件中
+     * 导出用户信息到文件中
      *
      * @param searchType 查询类型
      * @param keyWord    查询关键字
