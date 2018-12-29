@@ -215,12 +215,12 @@ public class RepositoryAdminManageServiceImpl implements RepositoryAdminManageSe
     }
 
     /**
-     * 更新仓库管理员信息
+     * 更新用户信息
      *
-     * @param repositoryAdmin 仓库管理员信息
+     * @param repositoryAdmin 用户信息
      * @return 返回一个boolean值，值为true代表更新成功，否则代表失败
      */
-    @UserOperation(value = "修改仓库管理员信息")
+    @UserOperation(value = "修改用户信息")
     @Override
     public boolean updateRepositoryAdmin(RepositoryAdmin repositoryAdmin) throws RepositoryAdminManageServiceException {
 
@@ -231,11 +231,11 @@ public class RepositoryAdminManageServiceImpl implements RepositoryAdminManageSe
                     return false;
 
                 // 若有指派的仓库则检查
-                if (repositoryAdmin.getRepositoryBelongID() != null) {
+                /*if (repositoryAdmin.getRepositoryBelongID() != null) {
                     RepositoryAdmin rAdminFromDB = repositoryAdminMapper.selectByRepositoryID(repositoryAdmin.getRepositoryBelongID());
                     if (rAdminFromDB != null && !Objects.equals(rAdminFromDB.getId(), repositoryAdmin.getId()))
                         return false;
-                }
+                }*/
 
                 // 更新
                 repositoryAdminMapper.update(repositoryAdmin);

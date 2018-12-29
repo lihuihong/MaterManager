@@ -1,10 +1,13 @@
 package com.ken.wms.common.controller;
 
 import com.ken.wms.common.service.Interface.RepositoryAdminManageService;
+import com.ken.wms.common.service.Interface.SupplierManageService;
 import com.ken.wms.common.util.Response;
 import com.ken.wms.common.util.ResponseFactory;
 import com.ken.wms.domain.RepositoryAdmin;
+import com.ken.wms.domain.Supplier;
 import com.ken.wms.exception.RepositoryAdminManageServiceException;
+import com.ken.wms.exception.SupplierManageServiceException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -31,6 +34,9 @@ public class RepositoryAdminManageHandler {
 
     @Autowired
     private RepositoryAdminManageService repositoryAdminManageService;
+
+    @Autowired
+    private SupplierManageService supplierManageService;
 
     // 查询类型
     private static final String SEARCH_BY_ID = "searchByID";
@@ -104,6 +110,16 @@ public class RepositoryAdminManageHandler {
             total = (long) queryResult.get("total");
         }
 
+        List<Supplier> suppliers = new ArrayList<>();
+        for(int i = 0;i < rows.size();i++){
+            Integer id = rows.get(i).getRepositoryBelongID();
+            try {
+                List<Supplier> suppliers1  = (List<Supplier>) supplierManageService.selectById(id).get("data");
+                rows.get(i).setSupplierName(suppliers1.get(0).getName());
+            } catch (SupplierManageServiceException e) {
+                e.printStackTrace();
+            }
+        }
         // 设置 Response
         responseContent.setCustomerInfo("rows", rows);
         responseContent.setResponseTotal(total);
@@ -162,11 +178,11 @@ public class RepositoryAdminManageHandler {
     }
 
     /**
-     * 更新仓库管理员信息
+     * 更新用户信息
      *
-     * @param repositoryAdmin 仓库管理员信息
+     * @param repositoryAdmin 用户信息
      * @return 返回一个map，其中：key 为 result 的值为操作的结果，包括：success 与 error；key 为 data
-     * 的值为仓库管理员信息
+     * 的值为用户信息
      */
     @RequestMapping(value = "updateRepositoryAdmin", method = RequestMethod.POST)
     public

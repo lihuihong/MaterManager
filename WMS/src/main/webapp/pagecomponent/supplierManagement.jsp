@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 
 <script>
-	var search_type_supplier = "none";
+	var search_type_supplier = "searchAll";
 	var search_keyWord = "";
 	var selectID;
 
@@ -19,7 +19,7 @@
 		exportSupplierAction()
 	})
 
-	// 下拉框選擇動作
+	// 下拉框选择
 	function optionAction() {
 		$(".dropOption").click(function() {
 			var type = $(this).text();
@@ -27,9 +27,6 @@
 			if (type == "所有") {
 				$("#search_input").attr("readOnly", "true");
 				search_type_supplier = "searchAll";
-			} else if (type == "供应商ID") {
-				$("#search_input").removeAttr("readOnly");
-				search_type_supplier = "searchByID";
 			} else if (type == "供应商名称") {
 				$("#search_input").removeAttr("readOnly");
 				search_type_supplier = "searchByName";
@@ -68,11 +65,6 @@
 						{
 							columns : [
 									{
-										field : 'id',
-										title : '供应商ID'
-									//sortable: true
-									},
-									{
 										field : 'name',
 										title : '供应商名称'
 									},
@@ -87,12 +79,10 @@
 									{
 										field : 'address',
 										title : '地址',
-										visible : false
 									},
 									{
 										field : 'email',
 										title : '电子邮件',
-										visible : false
 									},
 									{
 										field : 'operation',

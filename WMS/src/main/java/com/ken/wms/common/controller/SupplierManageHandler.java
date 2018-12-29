@@ -3,7 +3,9 @@ package com.ken.wms.common.controller;
 import com.ken.wms.common.service.Interface.SupplierManageService;
 import com.ken.wms.common.util.Response;
 import com.ken.wms.common.util.ResponseFactory;
+import com.ken.wms.domain.Repository;
 import com.ken.wms.domain.Supplier;
+import com.ken.wms.exception.RepositoryManageServiceException;
 import com.ken.wms.exception.SupplierManageServiceException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -65,6 +69,35 @@ public class SupplierManageHandler {
         }
 
         return queryResult;
+    }
+
+
+    /**
+     * 查询所有供应商信息
+     *
+     * @return 返回一个 map，其中key=data表示查询的记录，key=total表示记录的条数
+     */
+    @SuppressWarnings("unchecked")
+    @RequestMapping(value = "getSupplierAll", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    Map<String, Object> getUnassignRepository() throws  SupplierManageServiceException {
+        // 初始化结果集
+        Map<String, Object> resultSet = new HashMap<>();
+        List<Supplier> data;
+        long total = 0;
+
+        // 查询
+        Map<String, Object> queryResult = supplierManageService.selectAll();
+        if (queryResult != null) {
+            data = (List<Supplier>) queryResult.get("data");
+            total = (long) queryResult.get("total");
+        } else
+            data = new ArrayList<>();
+
+        resultSet.put("data", data);
+        resultSet.put("total", total);
+        return resultSet;
     }
 
     /**

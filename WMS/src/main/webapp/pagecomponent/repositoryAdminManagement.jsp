@@ -95,7 +95,7 @@
 										//visible : false
 									},
 									{
-										field : "repositoryBelongID",
+										field : "supplierName",
 										title : "所属公司"
 									},
 									{
@@ -158,24 +158,18 @@
 		$('#repositoryAdmin_address_edit').val(row.address);
 		$('#repositoryAdmin_birth_edit').val(row.birth);
 		$('#repositoryAdmin_repoID_edit').text("");
-		
-		// 加载未分配仓库信息
-		if(row.repositoryBelongID != null){
-			$('#repositoryAdmin_repoID_edit').append("<option value='" + row.repositoryBelongID + "'>" + row.repositoryBelongID + "</option>");
-		}
-			$('#repositoryAdmin_repoID_edit').append("<option value=''>不指派</option>");
-		
+
 		$('#repositoryInfo').removeClass('hide').addClass('hide');
 		$.ajax({
 			type : 'GET',
-			url : 'repositoryManage/getUnassignRepository',
+			url : 'supplierManage/getSupplierAll',
 			dataType : 'json',
 			contentTypr : 'application/json',
 			success : function(response){
 				data = response.data;
 				unassignRepoCache = data;
 				$.each(data,function(index,element){
-					$('#repositoryAdmin_repoID_edit').append("<option value='" + element.id + "'>" + element.id + "</option>");
+					$('#repositoryAdmin_repoID_edit').append("<option value='" + element.id + "'>" + element.name + "</option>");
 				})
 			}
 		});
@@ -298,8 +292,6 @@
 			$.each(unassignRepoCache,function(index,element){
 				if(element.id == repositoryID){
 					$('#repository_address').text(element.address);
-					$('#repository_area').text(element.area);
-					$('#repository_status').text(element.status);
 					$('#repositoryInfo').removeClass('hide');
 				}
 			})
@@ -349,7 +341,20 @@
 	// 添加用户信息
 	function addRepositoryAdminAction() {
 		$('#add_repositoryAdmin').click(function() {
-			$('#add_modal').modal("show");
+            $.ajax({
+                type : 'GET',
+                url : 'supplierManage/getSupplierAll',
+                dataType : 'json',
+                contentTypr : 'application/json',
+                success : function(response){
+                    data = response.data;
+                    unassignRepoCache = data;
+                    $.each(data,function(index,element){
+                        $('#repositoryAdmin_supplier').append("<option value='" + element.id + "'>" + element.name + "</option>");
+                    })
+                }
+            });
+            $('#add_modal').modal("show");
 		});
 
 		$('#add_modal_submit').click(function() {
@@ -666,6 +671,15 @@
 									<input class="form_date form-control" value="" id="repositoryAdmin_birth" name="repositoryAdmin_birth" placeholder="出生日期">
 								</div>
 							</div>
+                            <div class="form-group">
+                                <label for="" class="control-label col-md-5 col-sm-5">
+                                    <span>所属公司：</span>
+                                </label>
+                                <div class="col-md-7 col-sm-7">
+                                    <select name="" class="form-control" id="repositoryAdmin_supplier" name="repositoryAdmin_supplier">
+                                    </select>
+                                </div>
+                            </div>
 						</form>
 					</div>
 					<div class="col-md-1 col-sm-1"></div>
@@ -950,9 +964,7 @@
 							<div class="form-group hide" id="repositoryInfo">
 								<div class="col-md-2"></div>
 								<div class="col-md-10 alert alert-info">
-									<div><label>仓库地址：</label><span id="repository_address"></span></div>
-									<div><label>仓库面积：</label><span id="repository_area"></span></div>
-									<div><label>仓库状态:</label><span id="repository_status"></span></div>
+									<div><label>公司地址：</label><span id="repository_address"></span></div>
 								</div>
 							</div>
 						</form>

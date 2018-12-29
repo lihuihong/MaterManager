@@ -16,8 +16,16 @@ public class RepositoryAdmin {
 	private String address;// 地址
 	private Date birth;// 出生日期
 	private Integer repositoryBelongID;// 所属仓库ID
+	private String supplierName;
 
-	
+	public String getSupplierName() {
+		return supplierName;
+	}
+
+	public void setSupplierName(String supplierName) {
+		this.supplierName = supplierName;
+	}
+
 	public Integer getRepositoryBelongID() {
 		return repositoryBelongID;
 	}

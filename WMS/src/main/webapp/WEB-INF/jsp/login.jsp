@@ -106,11 +106,9 @@
 		// 登陆信息加密模块
 		function infoEncrypt(userName, password, checkCode) {
 			var str1 = $.md5(password);
-			alert(str1);
 			var str2 = $.md5(str1 + userName);
 			alert(str2);
 			var str3 = $.md5(str2 + checkCode.toUpperCase());
-			alert(str3);
 			return str3;
 		}
 
