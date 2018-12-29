@@ -29,8 +29,6 @@ public class StockRecordManageServiceImpl implements StockRecordManageService {
     @Autowired
     private GoodsMapper goodsMapper;
     @Autowired
-    private RepositoryMapper repositoryMapper;
-    @Autowired
     private StorageManageService storageManageService;
     @Autowired
     private StockInMapper stockinMapper;
@@ -403,8 +401,8 @@ public class StockRecordManageServiceImpl implements StockRecordManageService {
      */
     private boolean repositoryValidate(Integer repositoryID) throws StockRecordManageServiceException {
         try {
-            Repository repository = repositoryMapper.selectByID(repositoryID);
-            return repository != null;
+            Supplier supplier = supplierMapper.selectById(repositoryID);
+            return supplier != null;
         } catch (PersistenceException e) {
             throw new StockRecordManageServiceException(e);
         }

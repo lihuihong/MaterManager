@@ -39,12 +39,12 @@
 			g.GOOD_SIZE as goodsSize,
 			g.GOOD_VALUE as goodsValue
 		from
-			wms_record_storage s,wms_respository r, wms_goods g
+			wms_record_storage s,wms_supplier r, wms_goods g
 		where
 		 	s.RECORD_GOODID = g.GOOD_ID and
-		 	s.RECORD_REPOSITORY = r.REPO_ID
+		 	s.RECORD_REPOSITORY = r.SUPPLIER_ID
 		 	<if test="repositoryID > 0">
-		 		and r.REPO_ID = #{repositoryID}
+		 		and r.SUPPLIER_ID = #{repositoryID}
 		 	</if>
 	</select>
 	

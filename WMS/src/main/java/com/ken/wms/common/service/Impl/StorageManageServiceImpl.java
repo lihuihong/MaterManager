@@ -6,7 +6,6 @@ import com.ken.wms.common.service.Interface.StorageManageService;
 import com.ken.wms.common.util.EJConvertor;
 import com.ken.wms.common.util.FileUtil;
 import com.ken.wms.dao.GoodsMapper;
-import com.ken.wms.dao.RepositoryMapper;
 import com.ken.wms.dao.StorageMapper;
 import com.ken.wms.domain.Goods;
 import com.ken.wms.domain.Repository;
@@ -37,8 +36,6 @@ public class StorageManageServiceImpl implements StorageManageService {
     private StorageMapper storageMapper;
     @Autowired
     private GoodsMapper goodsMapper;
-    @Autowired
-    private RepositoryMapper repositoryMapper;
     @Autowired
     private EJConvertor ejConvertor;
 
@@ -284,10 +281,7 @@ public class StorageManageServiceImpl implements StorageManageService {
 
             // validate
             Goods goods = goodsMapper.selectById(goodsID);
-            Repository repository = repositoryMapper.selectByID(repositoryID);
             if (goods == null)
-                isAvailable = false;
-            if (repository == null)
                 isAvailable = false;
             if (number < 0)
                 isAvailable = false;
@@ -399,10 +393,7 @@ public class StorageManageServiceImpl implements StorageManageService {
 
                     // validate
                     goods = goodsMapper.selectById(storage.getGoodsID());
-                    repository = repositoryMapper.selectByID(storage.getRepositoryID());
                     if (goods == null)
-                        isAvailable = false;
-                    if (repository == null)
                         isAvailable = false;
                     if (storage.getNumber() < 0)
                         isAvailable = false;

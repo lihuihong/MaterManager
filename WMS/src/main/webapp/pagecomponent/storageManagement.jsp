@@ -11,13 +11,13 @@
 		optionAction();
 		searchAction();
 		storageListInit();
-		bootstrapValidatorInit();
+		//bootstrapValidatorInit();
 
-		addStorageAction();
+		/*addStorageAction();
 		editStorageAction();
 		deleteStorageAction();
 		importStorageAction();
-		exportStorageAction()
+		exportStorageAction()*/
 	})
 
 	// 下拉框選擇動作
@@ -245,7 +245,7 @@
 				"goodsID" : select_goodsID,
 				"repositoryID" : select_repositoryID
 			}
-			
+
 			// ajax
 			$.ajax({
 				type : "GET",
@@ -273,7 +273,7 @@
 					handleAjaxError(xhr.status);
 				}
 			})
-			
+
 			$('#deleteWarning_modal').modal('hide');
 		})
 	}
@@ -467,7 +467,7 @@
 			$('#next').addClass("hide");
 			$('#submit').removeClass("hide");
 		})
-		
+
 		import_step = 1;
 	}
 
@@ -634,7 +634,7 @@
 								<div style="margin-top: 30px; margin-buttom: 15px">
 									<span class="btn btn-info btn-file"> <span> <span
 											class="glyphicon glyphicon-upload"></span> <span>上传文件</span>
-									</span> 
+									</span>
 									<form id="import_file_upload"><input type="file" id="file" name="file"></form>
 									</span>
 								</div>

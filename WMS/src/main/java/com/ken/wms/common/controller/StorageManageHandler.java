@@ -97,6 +97,9 @@ public class StorageManageHandler {
     Map<String, Object> getStorageListWithRepoID(@RequestParam("keyword") String keyword,
                                                  @RequestParam("searchType") String searchType, @RequestParam("repositoryBelong") String repositoryBelong,
                                                  @RequestParam("offset") int offset, @RequestParam("limit") int limit) throws StorageManageServiceException {
+
+        System.out.println("请求到了............");
+
         // 初始化 Response
         Response responseContent = ResponseFactory.newInstance();
 

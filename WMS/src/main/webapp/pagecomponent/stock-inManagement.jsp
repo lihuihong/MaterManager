@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <script>
-	var stockin_repository = null;// 入库仓库编号
 	var stockin_supplier = null;// 入库供应商编号
 	var stockin_goods = null;// 入库货物编号
 	var stockin_number = null;// 入库数量
@@ -10,14 +9,14 @@
 	var goodsCache = new Array();//货物信息缓存
 
 	$(function(){
-		repositorySelectorInit();
+        supplierSelectorInit();
+        GoodsSelectorInit();
+        //supplierAutocomplete();
 		dataValidateInit();
 		detilInfoToggle();
-
 		stockInOption();
 		fetchStorage();
-		supplierAutocomplete();
-		goodsAutocomplete();
+		//goodsAutocomplete();
 	})
 
 	// 数据校验
@@ -29,11 +28,11 @@
 				stockin_input : {
 					validators : {
 						notEmpty : {
-							message : '入库数量不能为空'
+							message : '租入数量不能为空'
 						},
 						greaterThan: {
 	                        value: 0,
-	                        message: '入库数量不能小于0'
+	                        message: '租入数量不能小于0'
 	                    }
 					}
 				}
@@ -82,6 +81,58 @@
 		})
 	}
 
+    // 供应商下拉列表初始化
+    function supplierSelectorInit(){
+        $.ajax({
+            type : 'GET',
+            url : 'supplierManage/getSupplierList',
+            dataType : 'json',
+            contentType : 'application/json',
+            data : {
+                searchType : 'searchAll',
+                keyWord : '',
+                offset : -1,
+                limit : -1
+            },
+            success : function(response){
+                $.each(response.rows,function(index,elem){
+                    $('#supplier_selector').append("<option value='" + elem.id + "'>" + elem.name + "</option>");
+                });
+            },
+            error : function(response){
+                $('#supplier_selector').append("<option value='-1'>加载失败</option>");
+            }
+
+
+        })
+    }
+
+    // 材料下拉列表初始化
+    function GoodsSelectorInit(){
+        $.ajax({
+            type : 'GET',
+            url : 'goodsManage/getGoodsList',
+            dataType : 'json',
+            contentType : 'application/json',
+            data : {
+                searchType : 'searchAll',
+                keyWord : '',
+                offset : -1,
+                limit : -1
+            },
+            success : function(response){
+                $.each(response.rows,function(index,elem){
+                    $('#goods_selector').append("<option value='" + elem.id + "'>" + elem.name + "</option>");
+                });
+            },
+            error : function(response){
+                $('#goods_selector').append("<option value='-1'>加载失败</option>");
+            }
+
+
+        })
+    }
+
 	// 供应商信息自动匹配
 	function supplierAutocomplete(){
 		$('#supplier_input').autocomplete({
@@ -94,8 +145,8 @@
 					dataType : 'json',
 					contentType : 'application/json',
 					data : {
-						offset : -1,
-						limit : -1,
+						offset : 1,
+						limit : 1,
 						searchType : 'searchByName',
 						keyWord : request.term
 					},
@@ -213,30 +264,7 @@
 		});
 	}
 
-	// 仓库下拉列表初始化
-	function repositorySelectorInit(){
-		$.ajax({
-			type : 'GET',
-			url : 'repositoryManage/getRepositoryList',
-			dataType : 'json',
-			contentType : 'application/json',
-			data : {
-				searchType : 'searchAll',
-				keyWord : '',
-				offset : -1,
-				limit : -1
-			},
-			success : function(response){
-				$.each(response.rows,function(index,elem){
-					$('#repository_selector').append("<option value='" + elem.id + "'>" + elem.id +"号仓库</option>");
-				});
-			},
-			error : function(response){
-				$('#repository_selector').append("<option value='-1'>加载失败</option>");
-			}
-			
-		})
-	}
+
 
 	// 获取仓库当前库存量
 	function fetchStorage(){
@@ -344,7 +372,7 @@
 
 <div class="panel panel-default">
 	<ol class="breadcrumb">
-		<li>货物入库</li>
+		<li>材料租入</li>
 	</ol>
 	<div class="panel-body">
 		<div class="row">
@@ -355,7 +383,8 @@
 						<form action="" class="form-inline">
 							<div class="form-group">
 								<label for="" class="form-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;供应商：</label>
-								<input type="text" class="form-control" id="supplier_input" placeholder="请输入供应商名称">
+								<select name="" id="supplier_selector" class="form-control">
+								</select>
 							</div>
 						</form>
 					</div>
@@ -367,8 +396,9 @@
 					<div class="col-md-10 col-sm-11">
 						<form action="" class="form-inline">
 							<div class="form-group">
-								<label for="" class="form-label">入库货物：</label>
-								<input type="text" class="form-control" id="goods_input" placeholder="请输入货物名称">
+								<label for="" class="form-label">租入材料：</label>
+								<select name="" id="goods_selector" class="form-control">
+								</select>
 							</div>
 						</form>
 					</div>
@@ -395,6 +425,7 @@
 						<label for="" class="text-info">供应商信息</label>
 					</div>
 				</div>
+
 				<div class="row">
 					<div class="col-md-1 col-sm-1"></div>
 					<div class="col-md-11 col-sm-11">
@@ -512,34 +543,34 @@
 				</div>
 			</div>
 		</div>
-        <div class="row" style="margin-top: 10px">
-            <div class="col-md-6 col-sm-6">
-                <div class="row">
-                    <div class="col-md-1 col-sm-1"></div>
-                    <div class="col-md-10 col-sm-11">
-                        <form action="" class="form-inline">
-                            <div class="form-group">
-                                <label for="" class="form-label">入库仓库：</label>
-                                <select name="" id="repository_selector" class="form-control">
-                                </select>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
 		<div class="row" style="margin-top:20px">
-			<div class="col-md-6 col-sm-6">
+			<div class="col-md-8 col-sm-8">
 				<div class="row">
 					<div class="col-md-1 col-sm-1"></div>
 					<div class="col-md-10 col-sm-11">
 						<form action="" class="form-inline" id="stockin_form">
 							<div class="form-group">
-								<label for="" class="control-label">入库数量：</label>
+								<label for="" class="form-label">租入数量：</label>
 								<input type="text" class="form-control" placeholder="请输入数量" id="stockin_input" name="stockin_input">
-								<span>(当前库存量：</span>
+								<span> ( 当前库存量：</span>
 								<span id="info_storage">-</span>
-								<span>)</span>
+								<span> )</span>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row" style="margin-top:20px">
+			<div class="col-md-8 col-sm-8">
+				<div class="row">
+					<div class="col-md-1 col-sm-1"></div>
+					<div class="col-md-10 col-sm-11">
+						<form action="" class="form-inline" id="">
+							<div class="form-group">
+								<label for="" class="form-label">总共价值：</label>
+								<input type="text" class="form-control" placeholder="请输入数量" id="" name="stockin_input">
+
 							</div>
 						</form>
 					</div>
@@ -550,7 +581,7 @@
 	</div>
 	<div class="panel-footer">
 		<div style="text-align:right">
-			<button class="btn btn-success" id="submit">提交入库</button>
+			<button class="btn btn-success" id="submit">提交租入</button>
 		</div>
 	</div>
 </div>

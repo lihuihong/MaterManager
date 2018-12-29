@@ -148,11 +148,11 @@ pageEncoding="UTF-8"%>
                                 <ul class="list-group">
                                     <li class="list-group-item">
                                         <a href="javascript:void(0)" id="" class="menu_item"
-                                           name="pagecomponent/stock-inManagement.jsp">材料租入情况</a>
+                                           name="pagecomponent/stock-inManagement.jsp">材料租入</a>
                                     </li>
                                     <li class="list-group-item">
                                         <a href="javascript:void(0)" id="" class="menu_item"
-                                           name="pagecomponent/stock-outManagement.jsp">材料租出情况</a>
+                                           name="pagecomponent/stock-outManagement.jsp">材料租出</a>
                                     </li>
                                 </ul>
                             </shiro:hasRole>
@@ -160,11 +160,11 @@ pageEncoding="UTF-8"%>
                                 <ul class="list-group">
                                     <li class="list-group-item">
                                         <a href="javascript:void(0)" id="" class="menu_item"
-                                           name="pagecomponent/stock-inManagementCommon.jsp">材料租入情况</a>
+                                           name="pagecomponent/stock-inManagementCommon.jsp">材料租入</a>
                                     </li>
                                     <li class="list-group-item">
                                         <a href="javascript:void(0)" id="" class="menu_item"
-                                           name="pagecomponent/stock-outManagementCommon.jsp">材料租出情况</a>
+                                           name="pagecomponent/stock-outManagementCommon.jsp">材料租出</a>
                                     </li>
                                 </ul>
                             </shiro:hasRole>
