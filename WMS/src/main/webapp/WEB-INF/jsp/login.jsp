@@ -32,10 +32,10 @@
 						<form id="login_form" class="form-horizontal" style="">
 
 							<div class="form-group">
-								<label class="control-label col-md-4 col-sm-4">用户ID：</label>
+								<label class="control-label col-md-4 col-sm-4">用户名：</label>
 								<div class="col-md-7 col-sm-7">
-									<input type="text" id="userID" class="form-control"
-										placeholder="用户ID" name="userID" />
+									<input type="text" id="userName" class="form-control"
+										placeholder="用户名" name="userName" />
 								</div>
 							</div>
 
@@ -104,10 +104,13 @@
 		}
 
 		// 登陆信息加密模块
-		function infoEncrypt(userID, password, checkCode) {
+		function infoEncrypt(userName, password, checkCode) {
 			var str1 = $.md5(password);
-			var str2 = $.md5(str1 + userID);
+			alert(str1);
+			var str2 = $.md5(str1 + userName);
+			alert(str2);
 			var str3 = $.md5(str2 + checkCode.toUpperCase());
+			alert(str3);
 			return str3;
 		}
 
@@ -120,13 +123,13 @@
 					validating : 'glyphicon glyphicon-refresh'
 				},
 				fields : {
-					userID : {
+					userName : {
 						validators : {
 							notEmpty : {
 								message : '用户名不能为空'
 							},regexp: {
-		                        regexp: '[0-9]+',
-		                        message: '只允许输入数字'
+		                        regexp: '[0-9a-zA-Z]+',
+		                        message: '只允许输入字母和数字'
 		                    },
 							callback : {}
 						}
@@ -158,15 +161,15 @@
 				var bv = $form.data('bootstrapValidator');
 
 				// 发送数据到后端 进行验证
-				var userID = $('#userID').val();
+				var userName = $('#userName').val();
 				var password = $('#password').val();
 				var checkCode = $('#checkCode').val();
 
 				// 加密
-				password = infoEncrypt(userID, password, checkCode)
+				password = infoEncrypt(userName, password, checkCode)
 
 				var data = {
-					"id" : userID,
+					"userName" : userName,
 					"password" : password,
 				}
 				$.ajax({
@@ -184,7 +187,7 @@
 							var field;
 							if(response.msg == "unknownAccount"){
 								errorMessage = "用户名错误";
-								field = "userID";
+								field = "userName";
 							}
 							else if(response.msg == "incorrectCredentials"){
 								errorMessage = "密码或验证码错误";
@@ -205,7 +208,7 @@
 							$('#checkCode').val("");
 						}else{
 							// 页面跳转
-							window.location.href = "/WMS";
+							window.location.href = "/";
 						}
 					},
 					error:function(data){

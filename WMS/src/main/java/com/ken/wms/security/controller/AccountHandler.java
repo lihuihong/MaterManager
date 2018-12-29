@@ -77,10 +77,10 @@ public class AccountHandler {
 
         // 判断用户是否已经登陆
         if (currentUser != null && !currentUser.isAuthenticated()) {
-            String id = (String) user.get(USER_ID);
+            String userName = (String) user.get(USER_NAME);
             String password = (String) user.get(USER_PASSWORD);
             Session session = currentUser.getSession();
-            UsernamePasswordToken token = new UsernamePasswordToken(id, password);
+            UsernamePasswordToken token = new UsernamePasswordToken(userName, password);
 
             try {
                 // 执行登陆操作

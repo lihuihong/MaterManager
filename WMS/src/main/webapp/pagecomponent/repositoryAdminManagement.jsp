@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 
 <script>
-	var search_type_repositoryAdmin = "none";
+	var search_type_repositoryAdmin = "searchAll";
 	var search_keyWord = "";
 	var selectID;
 
@@ -20,7 +20,7 @@
 		exportRepositoryAdminAction()
 	})
 
-	// 下拉框選擇動作
+	// 下拉框选择
 	function optionAction() {
 		$(".dropOption").click(function() {
 			var type = $(this).text();
@@ -28,10 +28,10 @@
 			if (type == "所有") {
 				$("#search_input").attr("readOnly", "true");
 				search_type_repositoryAdmin = "searchAll";
-			} else if (type == "仓库管理员ID") {
+			} else if (type == "用户ID") {
 				$("#search_input").removeAttr("readOnly");
 				search_type_repositoryAdmin = "searchByID";
-			} else if (type == "仓库管理员姓名") {
+			} else if (type == "用户姓名") {
 				$("#search_input").removeAttr("readOnly");
 				search_type_repositoryAdmin = "searchByName";
 			}else if(type == "仓库ID"){
@@ -72,13 +72,8 @@
 						{
 							columns : [
 									{
-										field : 'id',
-										title : '仓库管理员ID'
-									//sortable: true
-									},
-									{
 										field : 'name',
-										title : '仓库管理员姓名'
+										title : '用户姓名'
 									},
 									{
 										field : 'sex',
@@ -87,21 +82,21 @@
 									{
 										field : 'tel',
 										title : '联系电话',
-											visible : false
+										//visible : false
 									},
 									{
 										field : 'address',
 										title : '地址',
-										visible : false
+										//visible : false
 									},
 									{
 										field : 'birth',
 										title : '出生日期',
-										visible : false
+										//visible : false
 									},
 									{
 										field : "repositoryBelongID",
-										title : "所属仓库ID"
+										title : "所属公司"
 									},
 									{
 										field : 'operation',
@@ -216,28 +211,28 @@
 				repositoryAdmin_name : {
 					validators : {
 						notEmpty : {
-							message : '仓库管理员姓名不能为空'
+							message : '用户姓名不能为空'
 						}
 					}
 				},
 				repositoryAdmin_tel : {
 					validators : {
 						notEmpty : {
-							message : '仓库管理员联系电话不能为空'
+							message : '用户联系电话不能为空'
 						}
 					}
 				},
 				repositoryAdmin_address : {
 					validators : {
 						notEmpty : {
-							message : '仓库管理员联系地址不能为空'
+							message : '用户联系地址不能为空'
 						}
 					}
 				},
 				repositoryAdmin_birth : {
 					validators : {
 						notEmpty : {
-							message : '仓库管理员出身日期不能为空'
+							message : '用户出身日期不能为空'
 						}
 					}
 				}
@@ -246,7 +241,7 @@
 		})
 	}
 
-	// 编辑仓库管理员信息
+	// 编辑用户信息
 	function editRepositoryAdminAction() {
 		$('#edit_modal_submit').click(
 				function() {
@@ -281,10 +276,10 @@
 							var append = '';
 							if (response.result == "success") {
 								type = "success";
-								msg = "仓库管理员信息更新成功";
+								msg = "用户信息更新成功";
 							} else if (resposne == "error") {
 								type = "error";
-								msg = "仓库管理员信息更新失败"
+								msg = "用户信息更新失败"
 							}
 							showMsg(type, msg, append);
 							tableRefresh();
@@ -312,7 +307,7 @@
 		})
 	}
 
-	// 刪除仓库管理员信息
+	// 刪除用户信息
 	function deleteRepositoryAdminAction(){
 		$('#delete_confirm').click(function(){
 			var data = {
@@ -333,10 +328,10 @@
 					var append = '';
 					if(response.result == "success"){
 						type = "success";
-						msg = "仓库管理员信息删除成功";
+						msg = "用户信息删除成功";
 					}else{
 						type = "error";
-						msg = "仓库管理员信息删除失败";
+						msg = "用户信息删除失败";
 					}
 					showMsg(type, msg, append);
 					tableRefresh();
@@ -351,7 +346,7 @@
 		})
 	}
 
-	// 添加仓库管理员信息
+	// 添加用户信息
 	function addRepositoryAdminAction() {
 		$('#add_repositoryAdmin').click(function() {
 			$('#add_modal').modal("show");
@@ -379,11 +374,11 @@
 					var append = '';
 					if (response.result == "success") {
 						type = "success";
-						msg = "仓库管理员添加成功";
-						append = '注意：仓库管理员的系统初始密码为该ID';
+						msg = "用户信息添加成功";
+						append = '注意：用户的系统初始密码为该登录名';
 					} else if (response.result == "error") {
 						type = "error";
-						msg = "仓库管理员添加失败";
+						msg = "用户信息添加失败";
 					}
 					showMsg(type, msg, append);
 					tableRefresh();
@@ -408,7 +403,7 @@
 	var import_step = 1;
 	var import_start = 1;
 	var import_end = 3;
-	// 导入仓库管理员信息
+	// 导入用户信息
 	function importRepositoryAdminAction() {
 		$('#import_repositoryAdmin').click(function() {
 			$('#import_modal').modal("show");
@@ -460,8 +455,8 @@
 				success : function(data, status){
 					var total = 0;
 					var available = 0;
-					var msg1 = "仓库管理员信息导入成功";
-					var msg2 = "仓库管理员信息导入失败";
+					var msg1 = "用户信息导入成功";
+					var msg2 = "用户信息导入失败";
 					var info;
 
 					$('#import_progress_bar').addClass("hide");
@@ -491,7 +486,7 @@
 		})
 	}
 
-	// 导出仓库管理员信息
+	// 导出用户信息
 	function exportRepositoryAdminAction() {
 		$('#export_repositoryAdmin').click(function() {
 			$('#export_modal').modal("show");
@@ -508,7 +503,7 @@
 		})
 	}
 
-	// 导入仓库管理员模态框重置
+	// 导入用户模态框重置
 	function importModalReset(){
 		var i;
 		for(i = import_start; i <= import_end; i++){
@@ -551,7 +546,7 @@
 </script>
 <div class="panel panel-default">
 	<ol class="breadcrumb">
-		<li>仓库管理员信息管理</li>
+		<li>用户信息管理</li>
 	</ol>
 	<div class="panel-body">
 		<div class="row">
@@ -561,12 +556,12 @@
 						<div class="btn-group">
 							<button class="btn btn-default dropdown-toggle"
 								data-toggle="dropdown">
-								<span id="search_type">查询方式</span> <span class="caret"></span>
+								<span id="search_type">所有</span> <span class="caret"></span>
 							</button>
 							<ul class="dropdown-menu" role="menu">
-								<li><a href="javascript:void(0)" class="dropOption">仓库管理员ID</a></li>
-								<li><a href="javascript:void(0)" class="dropOption">仓库管理员姓名</a></li>
-								<li><a href="javascript:void(0)" class="dropOption">仓库ID</a></li>
+								<li><a href="javascript:void(0)" class="dropOption">用户登录名</a></li>
+								<li><a href="javascript:void(0)" class="dropOption">用户姓名</a></li>
+								<li><a href="javascript:void(0)" class="dropOption">公司名</a></li>
 								<li><a href="javascript:void(0)" class="dropOption">所有</a></li>
 							</ul>
 						</div>
@@ -574,8 +569,8 @@
 					<div class="col-md-9 col-sm-9">
 						<div>
 							<div class="col-md-5 col-sm-7">
-								<input id="search_input" type="text" class="form-control"
-									placeholder="查询仓库管理员信息">
+								<input id="search_input" type="text" class="form-control" value="所有"
+									placeholder="查询用户信息" readonly="readonly">
 							</div>
 							<div class="col-md-2 col-sm-5">
 								<button id="search_button" class="btn btn-success">
@@ -591,7 +586,7 @@
 		<div class="row" style="margin-top: 25px">
 			<div class="col-md-5">
 				<button class="btn btn-sm btn-default" id="add_repositoryAdmin">
-					<span class="glyphicon glyphicon-plus"></span> <span>添加仓库管理员信息</span>
+					<span class="glyphicon glyphicon-plus"></span> <span>添加用户信息</span>
 				</button>
 				<button class="btn btn-sm btn-default" id="import_repositoryAdmin">
 					<span class="glyphicon glyphicon-import"></span> <span>导入</span>
@@ -611,7 +606,7 @@
 	</div>
 </div>
 
-<!-- 添加仓库管理员信息模态框 -->
+<!-- 添加用户信息模态框 -->
 <div id="add_modal" class="modal fade" table-index="-1" role="dialog"
 	aria-labelledby="myModalLabel" aria-hidden="true"
 	data-backdrop="static">
@@ -620,7 +615,7 @@
 			<div class="modal-header">
 				<button class="close" type="button" data-dismiss="modal"
 					aria-hidden="true">&times;</button>
-				<h4 class="modal-title" id="myModalLabel">添加仓库管理员信息</h4>
+				<h4 class="modal-title" id="myModalLabel">添加用户信息</h4>
 			</div>
 			<div class="modal-body">
 				<!-- 模态框的内容 -->
@@ -630,15 +625,15 @@
 						<form class="form-horizontal" role="form" id="repositoryAdmin_form"
 							style="margin-top: 25px">
 							<div class="form-group">
-								<label for="" class="control-label col-md-5 col-sm-5"> <span>仓库管理员姓名：</span>
+								<label for="" class="control-label col-md-5 col-sm-5"> <span>用户姓名：</span>
 								</label>
 								<div class="col-md-7 col-sm-7">
 									<input type="text" class="form-control" id="repositoryAdmin_name"
-										name="repositoryAdmin_name" placeholder="仓库管理员姓名">
+										name="repositoryAdmin_name" placeholder="用户姓名">
 								</div>
 							</div>
 							<div class="form-group">
-								<label for="" class="control-label col-md-5 col-sm-5"> <span>仓库管理员性别:</span>
+								<label for="" class="control-label col-md-5 col-sm-5"> <span>用户性别：</span>
 								</label>
 								<div class="col-md-5 col-sm-5">
 									<select name="" class="form-control" id="repositoryAdmin_sex">
@@ -688,7 +683,7 @@
 	</div>
 </div>
 
-<!-- 导入仓库管理员信息模态框 -->
+<!-- 导入用户信息模态框 -->
 <div class="modal fade" id="import_modal" table-index="-1" role="dialog"
 	aria-labelledby="myModalLabel" aria-hidden="true"
 	data-backdrop="static">
@@ -697,7 +692,7 @@
 			<div class="modal-header">
 				<button class="close" type="button" data-dismiss="modal"
 					aria-hidden="true">&times;</button>
-				<h4 class="modal-title" id="myModalLabel">导入仓库管理员信息</h4>
+				<h4 class="modal-title" id="myModalLabel">导入用户信息</h4>
 			</div>
 			<div class="modal-body">
 				<div id="step1">
@@ -705,7 +700,7 @@
 						<div class="col-md-1 col-sm-1"></div>
 						<div class="col-md-10 col-sm-10">
 							<div>
-								<h4>点击下面的下载按钮，下载仓库管理员信息电子表格</h4>
+								<h4>点击下面的下载按钮，下载用户信息电子表格</h4>
 							</div>
 							<div style="margin-top: 30px; margin-buttom: 15px">
 								<a class="btn btn-info"
@@ -722,7 +717,7 @@
 						<div class="col-md-1 col-sm-1"></div>
 						<div class="col-md-10 col-sm-10">
 							<div>
-								<h4>请按照仓库管理员信息电子表格中指定的格式填写需要添加的一个或多个仓库管理员信息</h4>
+								<h4>请按照用户信息电子表格中指定的格式填写需要添加的一个或多个用户信息</h4>
 							</div>
 							<div class="alert alert-info"
 								style="margin-top: 10px; margin-buttom: 30px">
@@ -737,7 +732,7 @@
 						<div class="col-md-8 col-sm-10">
 							<div>
 								<div>
-									<h4>请点击下面上传文件按钮，上传填写好的仓库管理员信息电子表格</h4>
+									<h4>请点击下面上传文件按钮，上传填写好的用户信息电子表格</h4>
 								</div>
 								<div style="margin-top: 30px; margin-buttom: 15px">
 									<span class="btn btn-info btn-file"> <span> <span
@@ -814,7 +809,7 @@
 	</div>
 </div>
 
-<!-- 导出仓库管理员信息模态框 -->
+<!-- 导出用户信息模态框 -->
 <div class="modal fade" id="export_modal" table-index="-1" role="dialog"
 	aria-labelledby="myModalLabel" aria-hidden="true"
 	data-backdrop="static">
@@ -832,8 +827,8 @@
 							style="width: 70px; height: 70px; margin-top: 20px;">
 					</div>
 					<div class="col-md-8 col-sm-8">
-						<h3>是否确认导出仓库管理员信息</h3>
-						<p>(注意：请确定要导出的仓库管理员信息，导出的内容为当前列表的搜索结果)</p>
+						<h3>是否确认导出用户信息</h3>
+						<p>(注意：请确定要导出的用户信息，导出的内容为当前列表的搜索结果)</p>
 					</div>
 				</div>
 			</div>
@@ -866,8 +861,8 @@
 							style="width: 70px; height: 70px; margin-top: 20px;">
 					</div>
 					<div class="col-md-8 col-sm-8">
-						<h3>是否确认删除该条仓库管理员信息</h3>
-						<p>(注意：若该仓库管理员已经指派管理的仓库，则该仓库管理员信息将不能删除成功。如需删除该客户的信息，请先解除该仓库管理员的指派)</p>
+						<h3>是否确认删除该条用户信息</h3>
+						<p>(注意：若该用户已经指派管理的仓库，则该用户信息将不能删除成功。如需删除该客户的信息，请先解除该用户的指派)</p>
 					</div>
 				</div>
 			</div>
@@ -883,7 +878,7 @@
 	</div>
 </div>
 
-<!-- 编辑仓库管理员信息模态框 -->
+<!-- 编辑用户信息模态框 -->
 <div id="edit_modal" class="modal fade" table-index="-1" role="dialog"
 	aria-labelledby="myModalLabel" aria-hidden="true"
 	data-backdrop="static">
@@ -892,7 +887,7 @@
 			<div class="modal-header">
 				<button class="close" type="button" data-dismiss="modal"
 					aria-hidden="true">&times;</button>
-				<h4 class="modal-title" id="myModalLabel">编辑仓库管理员信息</h4>
+				<h4 class="modal-title" id="myModalLabel">编辑用户信息</h4>
 			</div>
 			<div class="modal-body">
 				<!-- 模态框的内容 -->
@@ -902,15 +897,15 @@
 						<form class="form-horizontal" role="form" id="repositoryAdmin_form_edit"
 							style="margin-top: 25px">
 							<div class="form-group">
-								<label for="" class="control-label col-md-5 col-sm-5"> <span>仓库管理员姓名：</span>
+								<label for="" class="control-label col-md-5 col-sm-5"> <span>用户姓名：</span>
 								</label>
 								<div class="col-md-7 col-sm-7">
 									<input type="text" class="form-control" id="repositoryAdmin_name_edit"
-										name="repositoryAdmin_name" placeholder="仓库管理员姓名">
+										name="repositoryAdmin_name" placeholder="用户姓名">
 								</div>
 							</div>
 							<div class="form-group">
-								<label for="" class="control-label col-md-5 col-sm-5"> <span>仓库管理员性别:</span>
+								<label for="" class="control-label col-md-5 col-sm-5"> <span>用户性别:</span>
 								</label>
 								<div class="col-md-5 col-sm-5">
 									<select name="" class="form-control" id="repositoryAdmin_sex_edit">
@@ -936,15 +931,15 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<label for="BirthDate" class="control-label col-md-5 col-sm-5"> 
-									<span>出生日期:</span>
+								<label for="BirthDate" class="control-label col-md-5 col-sm-5">
+									<span>出生日期 :</span>
 								</label>
 								<div class="col-md-7 col-sm-7">
 									<input class="form_date form-control" value="" id="repositoryAdmin_birth_edit" name="repositoryAdmin_birth" placeholder="出生日期">
 								</div>
 							</div>
 							<div class="form-group">
-								<label for="" class="control-label col-md-5 col-sm-5"> <span>所属仓库ID：</span>
+								<label for="" class="control-label col-md-5 col-sm-5"> <span>所属公司：</span>
 								</label>
 								<div class="col-md-7 col-sm-7">
 									<select name="" class="form-control" id="repositoryAdmin_repoID_edit">

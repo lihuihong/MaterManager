@@ -70,11 +70,11 @@ public class UserAuthorizingRealm extends AuthorizingRealm {
             UsernamePasswordToken usernamePasswordToken = (UsernamePasswordToken) authenticationToken;
             String principal = usernamePasswordToken.getUsername();
 
-            if (!StringUtils.isNumeric(principal))
+            /*if (!StringUtils.isNumeric(principal))
                 throw new AuthenticationException();
-
-            Integer userID = Integer.valueOf(principal);
-            UserInfoDTO userInfoDTO = userInfoService.getUserInfo(userID);
+*/
+            String userName = principal;
+            UserInfoDTO userInfoDTO = userInfoService.getUserInfo(userName);
 
             if (userInfoDTO != null) {
                 Subject currentSubject = SecurityUtils.getSubject();
