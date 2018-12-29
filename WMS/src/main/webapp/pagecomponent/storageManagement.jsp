@@ -2,8 +2,8 @@
 	pageEncoding="UTF-8"%>
 
 <script>
-	var search_type_storage = "none";
-	var search_keyWord = "";
+	var search_type_storage = "searchAll";
+	var search_keyWord = "所有";
 	var search_repository = "";
 	var select_goodsID;
 	var select_repositoryID;
@@ -13,7 +13,6 @@
 		searchAction();
 		storageListInit();
 		bootstrapValidatorInit();
-		repositoryOptionInit();
 
 		addStorageAction();
 		editStorageAction();
@@ -30,13 +29,10 @@
 			if (type == "所有") {
 				$("#search_input_type").attr("readOnly", "true");
 				search_type_storage = "searchAll";
-			} else if (type == "货物ID") {
-				$("#search_input_type").removeAttr("readOnly");
-				search_type_storage = "searchByGoodsID";
-			} else if (type == "货物名称") {
+			} else if (type == "材料名称") {
 				$("#search_input_type").removeAttr("readOnly");
 				search_type_storage = "searchByGoodsName";
-			} else if(type = "货物类型"){
+			} else if(type = "材料类型"){
 				$("#search_input_type").removeAttr("readOnly");
 				search_type_storage = "searchByGoodsType";
 			}else {
@@ -48,36 +44,11 @@
 		})
 	}
 
-	// 仓库下拉框数据初始化
-	function repositoryOptionInit(){
-		$.ajax({
-			type : 'GET',
-			url : 'repositoryManage/getRepositoryList',
-			dataType : 'json',
-			contentType : 'application/json',
-			data:{
-				searchType : "searchAll",
-				keyWord : "",
-				offset : -1,
-				limit : -1
-			},
-			success : function(response){
-				$.each(response.rows,function(index,elem){
-					$('#search_input_repository').append("<option value='" + elem.id + "'>" + elem.id +"号仓库</option>");
-				})
-			},
-			error : function(response){
-				// do nothing
-			}
-		});
-		$('#search_input_repository').append("<option value='all'>所有仓库</option>");
-	}
 
 	// 搜索动作
 	function searchAction() {
 		$('#search_button').click(function() {
 			search_keyWord = $('#search_input_type').val();
-			search_repository = $('#search_input_repository').val();
 			tableRefresh();
 		})
 	}
@@ -102,30 +73,30 @@
 							columns : [
 									{
 										field : 'goodsID',
-										title : '货物ID'
-									//sortable: true
+										title : '材料ID',
+										sortable: true
 									},
 									{
 										field : 'goodsName',
-										title : '货物名称'
+										title : '材料名称'
 									},
 									{
 										field : 'goodsType',
-										title : '货物类型'
+										title : '材料类型'
 									},
 									{
 										field : 'goodsSize',
-										title : '货物尺寸',
+										title : '材料尺寸',
 										visible : false
 									},
 									{
 										field : 'goodsValue',
-										title : '货物价值',
+										title : '材料价值',
 										visible : false
 									},
 									{
 										field : 'repositoryID',
-										title : '仓库ID'
+										title : '所属公司'
 									},
 									{
 										field : 'number',
@@ -204,7 +175,7 @@
 				storage_goodsID : {
 					validators : {
 						notEmpty : {
-							message : '货物ID不能为空'
+							message : '材料ID不能为空'
 						}
 					}
 				},
@@ -519,12 +490,11 @@
 				<div class="btn-group">
 					<button class="btn btn-default dropdown-toggle"
 						data-toggle="dropdown">
-						<span id="search_type">查询方式</span> <span class="caret"></span>
+						<span id="search_type">所有</span> <span class="caret"></span>
 					</button>
 					<ul class="dropdown-menu" role="menu">
-						<li><a href="javascript:void(0)" class="dropOption">货物ID</a></li>
-						<li><a href="javascript:void(0)" class="dropOption">货物名称</a></li>
-						<li><a href="javascript:void(0)" class="dropOption">货物类型</a></li>
+						<li><a href="javascript:void(0)" class="dropOption">材料名称</a></li>
+						<li><a href="javascript:void(0)" class="dropOption">材料类型</a></li>
 						<li><a href="javascript:void(0)" class="dropOption">所有</a></li>
 					</ul>
 				</div>
@@ -533,11 +503,7 @@
 				<div>
 					<div class="col-md-3 col-sm-3">
 						<input id="search_input_type" type="text" class="form-control"
-							placeholder="货物ID">
-					</div>
-					<div class="col-md-3 col-sm-4">
-						<select class="form-control" id="search_input_repository">
-						</select>
+							placeholder="所有" readonly value="所有">
 					</div>
 					<div class="col-md-2 col-sm-2">
 						<button id="search_button" class="btn btn-success">
@@ -590,19 +556,11 @@
 						<form class="form-horizontal" role="form" id="storage_form"
 							style="margin-top: 25px">
 							<div class="form-group">
-								<label for="" class="control-label col-md-4 col-sm-4"> <span>货物ID：</span>
-								</label>
-								<div class="col-md-8 col-sm-8">
-									<input type="text" class="form-control" id="storage_goodsID"
-										name="storage_goodsID" placeholder="货物ID">
-								</div>
-							</div>
-							<div class="form-group">
-								<label for="" class="control-label col-md-4 col-sm-4"> <span>仓库ID：</span>
+								<label for="" class="control-label col-md-4 col-sm-4"> <span>所属公司：</span>
 								</label>
 								<div class="col-md-8 col-sm-8">
 									<input type="text" class="form-control" id="storage_repositoryID"
-										name="storage_repositoryID" placeholder="仓库ID">
+										name="storage_repositoryID" placeholder="所属公司">
 								</div>
 							</div>
 							<div class="form-group">
@@ -829,7 +787,7 @@
 			<div class="modal-header">
 				<button class="close" type="button" data-dismiss="modal"
 					aria-hidden="true">&times;</button>
-				<h4 class="modal-title" id="myModalLabel">编辑货物信息</h4>
+				<h4 class="modal-title" id="myModalLabel">编辑材料信息</h4>
 			</div>
 			<div class="modal-body">
 				<!-- 模态框的内容 -->
@@ -839,7 +797,7 @@
 						<form class="form-horizontal" role="form" id="storage_form_edit"
 							style="margin-top: 25px">
 							<div class="form-group">
-								<label for="" class="control-label col-md-4 col-sm-4"> <span>货物ID：</span>
+								<label for="" class="control-label col-md-4 col-sm-4"> <span>材料ID：</span>
 								</label>
 								<div class="col-md-4 col-sm-4">
 									<p id="storage_goodsID_edit" class="form-control-static"></p>

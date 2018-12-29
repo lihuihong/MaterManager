@@ -8,35 +8,11 @@
     search_end_date = null
 
     $(function(){
-        repositoryOptionInit();
         datePickerInit();
         storageListInit();
         searchAction();
     })
 
-    // 仓库下拉框数据初始化
-	function repositoryOptionInit(){
-		$.ajax({
-			type : 'GET',
-			url : 'repositoryManage/getRepositoryList',
-			dataType : 'json',
-			contentType : 'application/json',
-			data:{
-				searchType : "searchAll",
-				keyWord : "",
-				offset : -1,
-				limit : -1
-			},
-			success : function(response){
-				$.each(response.rows,function(index,elem){
-					$('#search_repository_ID').append("<option value='" + elem.id + "'>" + elem.id +"号仓库</option>");
-				})
-			},
-			error : function(response){
-				// do nothing 
-			}
-		});
-	}
 
 	// 日期选择器初始化
 	function datePickerInit(){

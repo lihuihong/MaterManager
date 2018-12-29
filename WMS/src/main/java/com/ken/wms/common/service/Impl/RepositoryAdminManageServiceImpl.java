@@ -260,20 +260,15 @@ public class RepositoryAdminManageServiceImpl implements RepositoryAdminManageSe
     public boolean deleteRepositoryAdmin(Integer repositoryAdminID) throws RepositoryAdminManageServiceException {
 
         try {
-            // 判断是否已指派仓库
-            RepositoryAdmin repositoryAdmin = repositoryAdminMapper.selectByID(repositoryAdminID);
-            if (repositoryAdmin != null && repositoryAdmin.getRepositoryBelongID() == null) {
 
                 // 删除仓库管理员信息
                 repositoryAdminMapper.deleteByID(repositoryAdminID);
-
                 // 删除账户信息
                 userInfoService.deleteUserInfo(repositoryAdminID);
 
                 return true;
-            } else
-                return false;
         } catch (PersistenceException | UserInfoServiceException e) {
+
             throw new RepositoryAdminManageServiceException(e);
         }
     }

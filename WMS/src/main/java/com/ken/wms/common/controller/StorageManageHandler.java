@@ -38,7 +38,6 @@ public class StorageManageHandler {
     @Autowired
     private StockRecordManageService stockRecordManageService;
 
-    private static final String SEARCH_BY_GOODS_ID = "searchByGoodsID";
     private static final String SEARCH_BY_GOODS_NAME = "searchByGoodsName";
     private static final String SEARCH_BY_GOODS_TYPE = "searchByGoodsType";
     private static final String SEARCH_ALL = "searchAll";
@@ -64,16 +63,6 @@ public class StorageManageHandler {
                     queryResult = storageManageService.selectAll(repositoryID, offset, limit);
                 } else {
                     queryResult = storageManageService.selectAll(-1, offset, limit);
-                }
-                break;
-            case SEARCH_BY_GOODS_ID:
-                if (StringUtils.isNumeric(keyword)) {
-                    Integer goodsID = Integer.valueOf(keyword);
-                    if (StringUtils.isNumeric(repositoryBelong)) {
-                        Integer repositoryID = Integer.valueOf(repositoryBelong);
-                        queryResult = storageManageService.selectByGoodsID(goodsID, repositoryID, offset, limit);
-                    } else
-                        queryResult = storageManageService.selectByGoodsID(goodsID, -1, offset, limit);
                 }
                 break;
             case SEARCH_BY_GOODS_TYPE:

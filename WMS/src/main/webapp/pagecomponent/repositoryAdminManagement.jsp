@@ -28,16 +28,10 @@
 			if (type == "所有") {
 				$("#search_input").attr("readOnly", "true");
 				search_type_repositoryAdmin = "searchAll";
-			} else if (type == "用户ID") {
-				$("#search_input").removeAttr("readOnly");
-				search_type_repositoryAdmin = "searchByID";
 			} else if (type == "用户姓名") {
 				$("#search_input").removeAttr("readOnly");
 				search_type_repositoryAdmin = "searchByName";
-			}else if(type == "仓库ID"){
-				$("#search_input").removeAttr("readOnly");
-				search_type_repositoryAdmin = "searchByRepositoryID";
-			} else {
+			}else {
 				$("#search_input").removeAttr("readOnly");
 			}
 
@@ -363,7 +357,8 @@
 				tel : $('#repositoryAdmin_tel').val(),
 				sex : $('#repositoryAdmin_sex').val(),
 				address : $('#repositoryAdmin_address').val(),
-				birth : $('#repositoryAdmin_birth').val()
+				birth : $('#repositoryAdmin_birth').val(),
+                repositoryBelongID : $('#repositoryAdmin_supplier').val()
 			}
 			// ajax
 			$.ajax({
@@ -564,9 +559,7 @@
 								<span id="search_type">所有</span> <span class="caret"></span>
 							</button>
 							<ul class="dropdown-menu" role="menu">
-								<li><a href="javascript:void(0)" class="dropOption">用户登录名</a></li>
 								<li><a href="javascript:void(0)" class="dropOption">用户姓名</a></li>
-								<li><a href="javascript:void(0)" class="dropOption">公司名</a></li>
 								<li><a href="javascript:void(0)" class="dropOption">所有</a></li>
 							</ul>
 						</div>
@@ -876,7 +869,7 @@
 					</div>
 					<div class="col-md-8 col-sm-8">
 						<h3>是否确认删除该条用户信息</h3>
-						<p>(注意：若该用户已经指派管理的仓库，则该用户信息将不能删除成功。如需删除该客户的信息，请先解除该用户的指派)</p>
+						<p>(注意：删除操作不可逆，删除后将不可恢复)</p>
 					</div>
 				</div>
 			</div>

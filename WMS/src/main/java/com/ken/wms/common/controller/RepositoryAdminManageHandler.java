@@ -39,9 +39,7 @@ public class RepositoryAdminManageHandler {
     private SupplierManageService supplierManageService;
 
     // 查询类型
-    private static final String SEARCH_BY_ID = "searchByID";
     private static final String SEARCH_BY_NAME = "searchByName";
-    private static final String SEARCH_BY_REPOSITORY_ID = "searchByRepositoryID";
     private static final String SEARCH_ALL = "searchAll";
 
     /**
@@ -61,16 +59,8 @@ public class RepositoryAdminManageHandler {
             case SEARCH_ALL:
                 queryResult = repositoryAdminManageService.selectAll(offset, limit);
                 break;
-            case SEARCH_BY_ID:
-                if (StringUtils.isNumeric(keyWord))
-                    queryResult = repositoryAdminManageService.selectByID(Integer.valueOf(keyWord));
-                break;
             case SEARCH_BY_NAME:
                 queryResult = repositoryAdminManageService.selectByName(offset, limit, keyWord);
-                break;
-            case SEARCH_BY_REPOSITORY_ID:
-                if (StringUtils.isNumeric(keyWord))
-                    queryResult = repositoryAdminManageService.selectByRepositoryID(Integer.valueOf(keyWord));
                 break;
             default:
                 // do other things
@@ -127,9 +117,9 @@ public class RepositoryAdminManageHandler {
     }
 
     /**
-     * 添加一条仓库管理员信息
+     * 添加一个用户
      *
-     * @param repositoryAdmin 仓库管理员信息
+     * @param repositoryAdmin 用户信息
      * @return 返回一个map，其中：key 为 result表示操作的结果，包括：success 与 error
      */
     @RequestMapping(value = "addRepositoryAdmin", method = RequestMethod.POST)
@@ -201,11 +191,11 @@ public class RepositoryAdminManageHandler {
     }
 
     /**
-     * 删除指定 ID 的仓库管理员信息
+     * 删除指定 ID 的用户信息
      *
-     * @param repositoryAdminID 仓库ID
+     * @param repositoryAdminID 用户ID
      * @return 返回一个map，其中：key 为 result 的值为操作的结果，包括：success 与 error；key 为 data
-     * 的值为仓库管理员信息
+     * 的值为用户信息
      */
     @RequestMapping(value = "deleteRepositoryAdmin", method = RequestMethod.GET)
     public
