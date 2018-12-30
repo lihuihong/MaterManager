@@ -12,8 +12,9 @@
 		<result property="goodsSize" column="goodsSize"/>
 		<result property="goodsType" column="goodsType"/>
 		<result property="goodsValue" column="goodsValue"/>
-		<result property="repositoryID" column="repositoryID"/>
+		<result property="supplierName" column="supplierName"/>
 		<result property="number" column="number"/>
+		<result property="supplierID" column="supplierID" />
 		<!-- 
 		<association property="goodsInfo" javaType="com.ken.Goods" resultMap="goods"/>
 		 -->
@@ -29,83 +30,78 @@
 	</resultMap>
 	 -->
 	 
-	<select id="selectAllAndRepositoryID" resultMap="storage">
+	<select id="selectAll" resultMap="storage">
 		select
-			r.REPO_ID as repositoryID,
 			s.RECORD_NUMBER as number,
 			g.GOOD_ID as goodsID,
 			g.GOOD_NAME as goodsName,
 			g.GOOD_RYPE as goodsType,
 			g.GOOD_SIZE as goodsSize,
-			g.GOOD_VALUE as goodsValue
+			g.GOOD_VALUE as goodsValue,
+			r.SUPPLIER_NAME as supplierName,
+			r.SUPPLIER_ID as supplierID
 		from
 			wms_record_storage s,wms_supplier r, wms_goods g
 		where
 		 	s.RECORD_GOODID = g.GOOD_ID and
-		 	s.RECORD_REPOSITORY = r.SUPPLIER_ID
-		 	<if test="repositoryID > 0">
-		 		and r.SUPPLIER_ID = #{repositoryID}
-		 	</if>
+		 	s.RECORD_SUPPLIERID = r.SUPPLIER_ID
 	</select>
 	
-	<select id="selectByGoodsIDAndRepositoryID" resultMap="storage">
+	<select id="selectByGoodsIDAndSupplierID" resultMap="storage">
 		select
-			r.REPO_ID as repositoryID,
+			r.SUPPLIER_ID as supplierID,
 			s.RECORD_NUMBER as number,
 			g.GOOD_ID as goodsID,
 			g.GOOD_NAME as goodsName,
 			g.GOOD_RYPE as goodsType,
 			g.GOOD_SIZE as goodsSize,
-			g.GOOD_VALUE as goodsValue
+			g.GOOD_VALUE as goodsValue,
+			r.SUPPLIER_ID as supplierID
 		from
-			wms_record_storage s,wms_respository r, wms_goods g
+			wms_record_storage s,wms_supplier r, wms_goods g
 		where
 		 	s.RECORD_GOODID = g.GOOD_ID and
-		 	s.RECORD_REPOSITORY = r.REPO_ID and
+		 	s.RECORD_SUPPLIERID = r.SUPPLIER_ID and
 		 	g.GOOD_ID = #{goodsID}
-		 	<if test="repositoryID > 0">
-		 		and r.REPO_ID = #{repositoryID}
+		 	<if test="supplierID > 0">
+		 		and r.SUPPLIER_ID = #{supplierID}
 		 	</if>
 	</select>
 	
-	<select id="selectByGoodsNameAndRepositoryID" resultMap="storage">
+	<select id="selectByGoodsName" resultMap="storage">
 		select
-			r.REPO_ID as repositoryID,
 			s.RECORD_NUMBER as number,
 			g.GOOD_ID as goodsID,
 			g.GOOD_NAME as goodsName,
 			g.GOOD_RYPE as goodsType,
 			g.GOOD_SIZE as goodsSize,
-			g.GOOD_VALUE as goodsValue
+			g.GOOD_VALUE as goodsValue,
+			r.SUPPLIER_NAME as supplierName,
+			r.SUPPLIER_ID as supplierID
 		from
-			wms_record_storage s,wms_respository r, wms_goods g
+			wms_record_storage s,wms_supplier r, wms_goods g
 		where
 		 	s.RECORD_GOODID = g.GOOD_ID and
-		 	s.RECORD_REPOSITORY = r.REPO_ID and
+			s.RECORD_SUPPLIERID = r.SUPPLIER_ID and
 		 	g.GOOD_NAME like concat("%",concat(#{goodsName},"%"))
-		 	<if test="repositoryID > 0">
-		 		and r.REPO_ID = #{repositoryID}
-		 	</if>
 	</select>
 	
-	<select id="selectByGoodsTypeAndRepositoryID" resultMap="storage">
+	<select id="selectByGoodsType" resultMap="storage">
 		select
-			r.REPO_ID as repositoryID,
 			s.RECORD_NUMBER as number,
 			g.GOOD_ID as goodsID,
 			g.GOOD_NAME as goodsName,
 			g.GOOD_RYPE as goodsType,
 			g.GOOD_SIZE as goodsSize,
-			g.GOOD_VALUE as goodsValue
+			g.GOOD_VALUE as goodsValue,
+			r.SUPPLIER_NAME as supplierName,
+			r.SUPPLIER_ID as supplierID
 		from
-			wms_record_storage s,wms_respository r, wms_goods g
+			wms_record_storage s,wms_supplier r, wms_goods g
 		where
 		 	s.RECORD_GOODID = g.GOOD_ID and
-		 	s.RECORD_REPOSITORY = r.REPO_ID and
+			s.RECORD_SUPPLIERID = r.SUPPLIER_ID and
 		 	g.GOOD_RYPE like concat("%",concat(#{goodsType},"%"))
-		 	<if test="repositoryID > 0">
-		 		and r.REPO_ID = #{repositoryID}
-		 	</if>
 	</select>
 	
 	<update id="update">
@@ -113,24 +109,24 @@
 			wms_record_storage
 		set
 			RECORD_GOODID = #{goodsID},
-			RECORD_REPOSITORY = #{repositoryID},
+			RECORD_SUPPLIERID = #{supplierID},
 			RECORD_NUMBER = #{number}
 		where
 			RECORD_GOODID = #{goodsID} and
-			RECORD_REPOSITORY = #{repositoryID}
+			RECORD_SUPPLIERID = #{supplierID}
 	</update>
 	
 	<insert id="insert">
 		insert into wms_record_storage
 		(
 			RECORD_GOODID,
-			RECORD_REPOSITORY,
+			RECORD_SUPPLIERID,
 			RECORD_NUMBER
 		)
 		values
 		(
 			#{goodsID},
-			#{repositoryID},
+			#{supplierID},
 			#{number}
 		)
 	</insert>

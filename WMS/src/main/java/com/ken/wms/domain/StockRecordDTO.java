@@ -1,10 +1,10 @@
 package com.ken.wms.domain;
 
 /**
- * 出库/入库记录DO
+ * 出租/租入记录DO
  *
  * @author Ken
- * @since 2017/4/5.
+ * @since 2018/12/30.
  */
 public class StockRecordDTO {
 
@@ -14,12 +14,12 @@ public class StockRecordDTO {
     private Integer recordID;
 
     /**
-     * 记录的类型（出库/入库）
+     * 记录的类型（出租/租入）
      */
     private String type;
 
     /**
-     * 供应商（入库）或客户（出库）名称
+     * 供应商（租入）或客户（出租）名称
      */
     private String supplierOrCustomerName;
 
@@ -29,22 +29,22 @@ public class StockRecordDTO {
     private String goodsName;
 
     /**
-     * 出库或入库仓库ID
+     * 出租或租入仓库ID
      */
-    private Integer repositoryID;
+    private double price;
 
     /**
-     * 出库或入库数量
+     * 出租或租入数量
      */
     private long number;
 
     /**
-     * 出库或入库时间
+     * 出租或租入时间
      */
     private String time;
 
     /**
-     * 出库或入库经手人
+     * 出租或租入经手人
      */
     private String personInCharge;
 
@@ -65,8 +65,12 @@ public class StockRecordDTO {
         return goodsName;
     }
 
-    public Integer getRepositoryID() {
-        return repositoryID;
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
     }
 
     public long getNumber() {
@@ -97,9 +101,6 @@ public class StockRecordDTO {
         this.goodsName = goodsName;
     }
 
-    public void setRepositoryID(Integer repositoryID) {
-        this.repositoryID = repositoryID;
-    }
 
     public void setNumber(long number) {
         this.number = number;
@@ -120,7 +121,6 @@ public class StockRecordDTO {
                 ", type='" + type + '\'' +
                 ", supplierOrCustomerName='" + supplierOrCustomerName + '\'' +
                 ", goodsName='" + goodsName + '\'' +
-                ", repositoryID=" + repositoryID +
                 ", number=" + number +
                 ", time=" + time +
                 ", personInCharge='" + personInCharge + '\'' +

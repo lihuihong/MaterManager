@@ -277,7 +277,7 @@ public class GoodsManageServiceImpl implements GoodsManageService {
                 return false;
 
             // 检查该货物是否有存储信息
-            List<Storage> storageRecord = storageMapper.selectByGoodsIDAndRepositoryID(goodsId, null);
+            List<Storage> storageRecord = storageMapper.selectByGoodsIDAndSupplierID(goodsId, null);
             if (storageRecord != null && !storageRecord.isEmpty())
                 return false;
 

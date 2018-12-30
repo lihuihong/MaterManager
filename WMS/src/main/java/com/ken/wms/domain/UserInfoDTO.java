@@ -41,10 +41,6 @@ public class UserInfoDTO {
      */
     private List<String> role = new ArrayList<>();
 
-    /**
-     * 用户指派的仓库
-     */
-    private Integer repositoryBelong;
 
     /**
      * 用户账户属性的 getter 以及 setter
@@ -90,13 +86,6 @@ public class UserInfoDTO {
         return firstLogin;
     }
 
-    public Integer getRepositoryBelong() {
-        return repositoryBelong;
-    }
-
-    public void setRepositoryBelong(Integer repositoryBelong) {
-        this.repositoryBelong = repositoryBelong;
-    }
 
     public String getAccessIP() {
         return accessIP;

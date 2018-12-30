@@ -13,7 +13,7 @@ public class Storage {
 	private String goodsSize;// 材料规格
 	private String goodsType;// 材料类型
 	private Double goodsValue;// 材料价值
-	private Integer repositoryID;// 公司ID
+	private Integer supplierID;// 公司ID
 	private String supplierName;
 	private Long number;// 库存数量
 
@@ -65,12 +65,12 @@ public class Storage {
 		this.goodsValue = goodsValue;
 	}
 
-	public Integer getRepositoryID() {
-		return repositoryID;
+	public Integer getSupplierID() {
+		return supplierID;
 	}
 
-	public void setRepositoryID(Integer repositoryID) {
-		this.repositoryID = repositoryID;
+	public void setSupplierID(Integer supplierID) {
+		this.supplierID = supplierID;
 	}
 
 	public Long getNumber() {
@@ -84,7 +84,7 @@ public class Storage {
 	@Override
 	public String toString() {
 		return "Storage [goodsID=" + goodsID + ", goodsName=" + goodsName + ", goodsSize=" + goodsSize + ", goodsType="
-				+ goodsType + ", goodsValue=" + goodsValue + ", repositoryID=" + repositoryID + ", number=" + number
+				+ goodsType + ", goodsValue=" + goodsValue + ", supplierID=" + supplierID + ", number=" + number
 				+ "]";
 	}
 

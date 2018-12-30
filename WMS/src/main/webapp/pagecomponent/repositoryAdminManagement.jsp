@@ -586,12 +586,6 @@
 				<button class="btn btn-sm btn-default" id="add_repositoryAdmin">
 					<span class="glyphicon glyphicon-plus"></span> <span>添加用户信息</span>
 				</button>
-				<button class="btn btn-sm btn-default" id="import_repositoryAdmin">
-					<span class="glyphicon glyphicon-import"></span> <span>导入</span>
-				</button>
-				<button class="btn btn-sm btn-default" id="export_repositoryAdmin">
-					<span class="glyphicon glyphicon-export"></span> <span>导出</span>
-				</button>
 			</div>
 			<div class="col-md-5"></div>
 		</div>

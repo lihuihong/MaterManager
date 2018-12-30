@@ -53,24 +53,23 @@ public class StorageManageHandler {
      *
      * @param searchType       查询类型
      * @param keyword          查询关键字
-     * @param repositoryBelong 查询仓库
      * @param offset           分页偏移值
      * @param limit            分页大小
      * @return 结果的一个Map，其中： key为 data 的代表记录数据；key 为 total 代表结果记录的数量
      */
-    private Map<String, Object> query(String searchType, String keyword, String repositoryBelong, int offset,
+    private Map<String, Object> query(String searchType, String keyword,  int offset,
                                       int limit) throws StorageManageServiceException {
         Map<String, Object> queryResult = null;
 
         switch (searchType) {
             case SEARCH_ALL:
-                queryResult = storageManageService.selectAll(-1, offset, limit);
+                queryResult = storageManageService.selectAll(offset, limit);
                 break;
             case SEARCH_BY_GOODS_TYPE:
-                queryResult = storageManageService.selectByGoodsType(keyword, -1, offset, limit);
+                queryResult = storageManageService.selectByGoodsType(keyword, offset, limit);
                 break;
             case SEARCH_BY_GOODS_NAME:
-                queryResult = storageManageService.selectByGoodsName(keyword, -1, offset, limit);
+                queryResult = storageManageService.selectByGoodsName(keyword, offset, limit);
                 break;
             default:
                 // do other thing
@@ -85,7 +84,6 @@ public class StorageManageHandler {
      *
      * @param keyword          查询关键字
      * @param searchType       查询类型
-     * @param repositoryBelong 查询所属的仓库
      * @param offset           分页偏移值
      * @param limit            分页大小
      * @return 结果的一个Map，其中： key为 rows 的代表记录数据；key 为 total 代表结果记录的数量
@@ -95,10 +93,10 @@ public class StorageManageHandler {
     public
     @ResponseBody
     Map<String, Object> getStorageListWithRepoID(@RequestParam("keyword") String keyword,
-                                                 @RequestParam("searchType") String searchType, @RequestParam("repositoryBelong") String repositoryBelong,
-                                                 @RequestParam("offset") int offset, @RequestParam("limit") int limit) throws StorageManageServiceException {
+                                                 @RequestParam("searchType") String searchType,
+                                                 @RequestParam("offset") int offset,
+                                                 @RequestParam("limit") int limit) throws StorageManageServiceException {
 
-        System.out.println("请求到了............");
 
         // 初始化 Response
         Response responseContent = ResponseFactory.newInstance();
@@ -107,7 +105,7 @@ public class StorageManageHandler {
         long total = 0;
 
         // query
-        Map<String, Object> queryResult = query(searchType, keyword, repositoryBelong, offset, limit);
+        Map<String, Object> queryResult = query(searchType, keyword, offset, limit);
         if (queryResult != null) {
             rows = (List<Storage>) queryResult.get("data");
             total = (long) queryResult.get("total");
@@ -145,24 +143,20 @@ public class StorageManageHandler {
 
         HttpSession session = request.getSession();
         UserInfoDTO userInfo = (UserInfoDTO) session.getAttribute("userInfo");
-        Integer repositoryID = userInfo.getRepositoryBelong();
-        if (repositoryID > 0) {
-            Map<String, Object> queryResult = query(searchType, keyword, repositoryID.toString(), offset, limit);
-            if (queryResult != null) {
-                rows = (List<Storage>) queryResult.get("data");
+        Map<String, Object> queryResult = query(searchType, keyword, offset, limit);
+        if (queryResult != null) {
+            rows = (List<Storage>) queryResult.get("data");
 
-                for(int i = 0;i < rows.size();i++){
-                    Integer id = rows.get(i).getRepositoryID();
-                    try {
-                        List<Supplier> suppliers  = (List<Supplier>) supplierManageService.selectById(id).get("data");
-                        rows.get(i).setSupplierName(suppliers.get(0).getName());
-                    } catch (SupplierManageServiceException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                total = (long) queryResult.get("total");
+            for(int i = 0;i < rows.size();i++){
+                Integer id = rows.get(i).getSupplierID();
+                try {
+                    List<Supplier> suppliers  = (List<Supplier>) supplierManageService.selectById(id).get("data");
+                    rows.get(i).setSupplierName(suppliers.get(0).getName());
+                } catch (SupplierManageServiceException e) {
+                    e.printStackTrace(); }
             }
+
+            total = (long) queryResult.get("total");
         }
 
         if (rows == null)
@@ -189,18 +183,18 @@ public class StorageManageHandler {
         boolean isAvailable = true;
 
         String goodsID = (String) params.get("goodsID");
-        String repositoryID = (String) params.get("repositoryID");
+        String supplierID = (String) params.get("supplierID");
         String number = (String) params.get("number");
 
         if (StringUtils.isBlank(goodsID) || !StringUtils.isNumeric(goodsID))
             isAvailable = false;
-        if (StringUtils.isBlank(repositoryID) || !StringUtils.isNumeric(repositoryID))
+        if (StringUtils.isBlank(supplierID) || !StringUtils.isNumeric(supplierID))
             isAvailable = false;
         if (StringUtils.isBlank(number) || !StringUtils.isNumeric(number))
             isAvailable = false;
 
         if (isAvailable) {
-            isSuccess = storageManageService.addNewStorage(Integer.valueOf(goodsID), Integer.valueOf(repositoryID),
+            isSuccess = storageManageService.addNewStorage(Integer.valueOf(goodsID), Integer.valueOf(supplierID),
                     Integer.valueOf(number)) ? Response.RESPONSE_RESULT_SUCCESS : Response.RESPONSE_RESULT_ERROR;
         }
 
@@ -224,18 +218,18 @@ public class StorageManageHandler {
         String result = Response.RESPONSE_RESULT_ERROR;
 
         String goodsID = (String) params.get("goodsID");
-        String repositoryID = (String) params.get("repositoryID");
+        String supplierID = (String) params.get("supplierID");
         String number = (String) params.get("number");
 
         if (StringUtils.isBlank(goodsID) || !StringUtils.isNumeric(goodsID))
             isAvailable = false;
-        if (StringUtils.isBlank(repositoryID) || !StringUtils.isNumeric(repositoryID))
+        if (StringUtils.isBlank(supplierID) || !StringUtils.isNumeric(supplierID))
             isAvailable = false;
         if (StringUtils.isBlank(number) || !StringUtils.isNumeric(number))
             isAvailable = false;
 
         if (isAvailable) {
-            result = storageManageService.updateStorage(Integer.valueOf(goodsID), Integer.valueOf(repositoryID),
+            result = storageManageService.updateStorage(Integer.valueOf(goodsID), Integer.valueOf(supplierID),
                     Integer.valueOf(number)) ? Response.RESPONSE_RESULT_SUCCESS : Response.RESPONSE_RESULT_ERROR;
         }
 
@@ -330,12 +324,9 @@ public class StorageManageHandler {
 
         HttpSession session = request.getSession();
         UserInfoDTO userInfo = (UserInfoDTO) session.getAttribute("userInfo");
-        Integer sessionRepositoryBelong = userInfo.getRepositoryBelong();
-        if (sessionRepositoryBelong > 0)
-            repositoryBelong = sessionRepositoryBelong.toString();
 
         List<Storage> storageList = null;
-        Map<String, Object> queryResult = query(searchType, keyword, repositoryBelong, -1, -1);
+        Map<String, Object> queryResult = query(searchType, keyword, -1, -1);
         if (queryResult != null)
             storageList = (List<Storage>) queryResult.get("data");
 

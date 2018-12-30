@@ -136,10 +136,10 @@
 				<form action="" class="form-horizontal" style=""
 					role="form" id="form">
 					<div class="form-group">
-						<label for="" class="control-label col-md-4 col-sm-4"> 用户ID: </label>
+						<label for="" class="control-label col-md-4 col-sm-4"> 用户名: </label>
 						<div class="col-md-8 col-sm-8">
 							<span class="hidden" id="userID">${sessionScope.userInfo.userID }</span>
-							<p class="form-control-static">${sessionScope.userInfo.userID }</p>
+							<p class="form-control-static">${sessionScope.userInfo.userName }</p>
 						</div>
 					</div>
 

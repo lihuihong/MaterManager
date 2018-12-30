@@ -4,6 +4,10 @@
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 
 <configuration>
+    <settings>
+        <!-- 打印查询语句 -->
+        <setting name="logImpl" value="STDOUT_LOGGING" />
+    </settings>
     <plugins>
         <!-- 配置 PageHelper 分页插件 -->
         <plugin interceptor="com.github.pagehelper.PageHelper">

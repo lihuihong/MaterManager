@@ -2,8 +2,8 @@
 	pageEncoding="UTF-8"%>
 
 <script>
-	var search_type_customer = "none";
-	var search_keyWord = "";
+	var search_type_customer = "searchAll";
+	var search_keyWord = "所有";
 	var selectID;
 
 	$(function() {
@@ -27,9 +27,6 @@
 			if (type == "所有") {
 				$("#search_input").attr("readOnly", "true");
 				search_type_customer = "searchAll";
-			} else if (type == "客户ID") {
-				$("#search_input").removeAttr("readOnly");
-				search_type_customer = "searchByID";
 			} else if (type == "客户名称") {
 				$("#search_input").removeAttr("readOnly");
 				search_type_customer = "searchByName";
@@ -67,11 +64,7 @@
 				.bootstrapTable(
 						{
 							columns : [
-									{
-										field : 'id',
-										title : '客户ID'
-									//sortable: true
-									},
+
 									{
 										field : 'name',
 										title : '客户名称'
@@ -87,12 +80,10 @@
 									{
 										field : 'address',
 										title : '地址',
-										visible : false
 									},
 									{
 										field : 'email',
 										title : '电子邮件',
-										visible : false
 									},
 									{
 										field : 'operation',
@@ -505,11 +496,10 @@
 				<div class="btn-group">
 					<button class="btn btn-default dropdown-toggle"
 						data-toggle="dropdown">
-						<span id="search_type">查询方式</span> 
+						<span id="search_type">所有</span>
 						<span class="caret"></span>
 					</button>
 					<ul class="dropdown-menu" role="menu">
-						<li><a href="javascript:void(0)" class="dropOption">客户ID</a></li>
 						<li><a href="javascript:void(0)" class="dropOption">客户名称</a></li>
 						<li><a href="javascript:void(0)" class="dropOption">所有</a></li>
 					</ul>
@@ -518,8 +508,8 @@
 			<div class="col-md-9 col-sm-9">
 				<div>
 					<div class="col-md-3 col-sm-4">
-						<input id="search_input" type="text" class="form-control"
-							placeholder="客户ID">
+						<input id="search_input" type="text" class="form-control" readonly
+							placeholder="所有">
 					</div>
 					<div class="col-md-2 col-sm-2">
 						<button id="search_button" class="btn btn-success">

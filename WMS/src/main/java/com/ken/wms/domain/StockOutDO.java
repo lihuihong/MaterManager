@@ -4,14 +4,14 @@ package com.ken.wms.domain;
 import java.util.Date;
 
 /**
- * 出库记录
+ * 出租记录
  *
  * @author Ken
  */
 public class StockOutDO {
 
     /**
-     * 出库记录ID
+     * 出租记录ID
      */
     private Integer id;
 
@@ -36,32 +36,25 @@ public class StockOutDO {
     private String goodName;
 
     /**
-     * 出库仓库ID
+     * 出租价格
      */
-    private Integer repositoryID;
+    private double price;
 
     /**
-     * 商品出库数量
+     * 商品出租数量
      */
     private long number;
 
     /**
-     * 出库日期
+     * 出租日期
      */
     private Date time;
 
     /**
-     * 出库经手人
+     * 出租经手人
      */
     private String personInCharge;// 经手人
 
-    public Integer getRepositoryID() {
-        return repositoryID;
-    }
-
-    public void setRepositoryID(Integer repositoryID) {
-        this.repositoryID = repositoryID;
-    }
 
     public Integer getId() {
         return id;
@@ -89,6 +82,14 @@ public class StockOutDO {
 
     public Integer getGoodID() {
         return goodID;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
     }
 
     public void setGoodID(Integer goodID) {
@@ -130,7 +131,7 @@ public class StockOutDO {
     @Override
     public String toString() {
         return "StockOutDO [id=" + id + ", customerID=" + customerID + ", customerName=" + customerName + ", goodID="
-                + goodID + ", goodName=" + goodName + ", repositoryID=" + repositoryID + ", number=" + number
+                + goodID + ", goodName=" + goodName + ", number=" + number
                 + ", time=" + time + ", personInCharge=" + personInCharge + "]";
     }
 

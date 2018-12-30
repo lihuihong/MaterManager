@@ -13,11 +13,14 @@
 		storageListInit();
 		//bootstrapValidatorInit();
 
-		/*addStorageAction();
+        GoodsSelectorInit();
+        supplierSelectorInit();
+
+		addStorageAction();
 		editStorageAction();
 		deleteStorageAction();
 		importStorageAction();
-		exportStorageAction()*/
+		exportStorageAction()
 	})
 
 	// 下拉框選擇動作
@@ -34,7 +37,7 @@
 			} else if(type = "材料类型"){
 				$("#search_input_type").removeAttr("readOnly");
 				search_type_storage = "searchByGoodsType";
-			}else {
+			} else {
 				$("#search_input_type").removeAttr("readOnly");
 			}
 
@@ -42,6 +45,60 @@
 			$("#search_input_type").attr("placeholder", type);
 		})
 	}
+
+    // 供应商下拉列表初始化
+    function supplierSelectorInit(){
+        $.ajax({
+            type : 'GET',
+            url : 'supplierManage/getSupplierList',
+            dataType : 'json',
+            contentType : 'application/json',
+            data : {
+                searchType : 'searchAll',
+                keyWord : '',
+                offset : -1,
+                limit : -1
+            },
+            success : function(response){
+                $.each(response.rows,function(index,elem){
+                    $('#supplier_selector').append("<option value='" + elem.id + "'>" + elem.name + "</option>");
+                });
+            },
+            error : function(response){
+                $('#supplier_selector').append("<option value='-1'>加载失败</option>");
+            }
+
+
+        })
+    }
+
+    // 材料下拉列表初始化
+    function GoodsSelectorInit(){
+        $.ajax({
+            type : 'GET',
+            url : 'goodsManage/getGoodsList',
+            dataType : 'json',
+            contentType : 'application/json',
+            data : {
+                searchType : 'searchAll',
+                keyWord : '',
+                offset : -1,
+                limit : -1
+            },
+            success : function(response){
+                $.each(response.rows,function(index,elem){
+                    if(index==0)
+                        price = elem.value;
+                    $('#goods_selector').append("<option value='" + elem.id + "'>" + elem.name + "</option>");
+                });
+            },
+            error : function(response){
+                $('#goods_selector').append("<option value='-1'>加载失败</option>");
+            }
+
+        })
+
+    }
 
 
 	// 搜索动作
@@ -114,7 +171,7 @@
 											'click .delete' : function(e,
 													value, row, index) {
 												select_goodsID = row.goodsID;
-												select_repositoryID = row.repositoryID
+												select_repositoryID = row.supplierID
 												$('#deleteWarning_modal').modal(
 														'show');
 											}
@@ -149,8 +206,10 @@
 
 		// load info
 		$('#storage_form_edit').bootstrapValidator("resetForm", true);
-		$('#storage_goodsID_edit').text(row.goodsID);
-		$('#storage_repositoryID_edit').text(row.repositoryID);
+		$('#storage_goodsID_edit').text(row.goodsName);
+		$('#storage_goodsID_e').val(row.goodsID);
+		$('#storage_repositoryID_e').val(row.supplierID);
+		$('#storage_repositoryID_edit').text(row.supplierName);
 		$('#storage_number_edit').val(row.number);
 	}
 
@@ -165,20 +224,6 @@
 			},
 			excluded : [ ':disabled' ],
 			fields : {
-				storage_goodsID : {
-					validators : {
-						notEmpty : {
-							message : '材料ID不能为空'
-						}
-					}
-				},
-				storage_repositoryID : {
-					validators : {
-						notEmpty : {
-							message : '仓库ID不能为空'
-						}
-					}
-				},
 				storage_number : {
 					validators : {
 						notEmpty : {
@@ -202,9 +247,9 @@
 					}
 
 					var data = {
-						goodsID : $('#storage_goodsID_edit').text(),
-						repositoryID : $('#storage_repositoryID_edit').text(),
-						number : $('#storage_number_edit').val(),
+						goodsID : $('#storage_goodsID_e').val(),
+						supplierID : $('#storage_repositoryID_e').val(),
+						number : $('#storage_number_edit').val()
 					}
 
 					// ajax
@@ -222,7 +267,7 @@
 							if (response.result == "success") {
 								type = "success";
 								msg = "库存信息更新成功";
-							} else if (resposne == "error") {
+							} else if (response.result == "error") {
 								type = "error";
 								msg = "库存信息更新失败"
 							}
@@ -286,8 +331,8 @@
 
 		$('#add_modal_submit').click(function() {
 			var data = {
-				goodsID : $('#storage_goodsID').val(),
-				repositoryID : $('#storage_repositoryID').val(),
+				goodsID : $('#goods_selector').val(),
+				supplierID : $('#supplier_selector').val(),
 				number : $('#storage_number').val()
 			}
 			// ajax
@@ -511,12 +556,6 @@
 				<button class="btn btn-sm btn-default" id="add_storage">
 					<span class="glyphicon glyphicon-plus"></span> <span>添加库存信息</span>
 				</button>
-				<button class="btn btn-sm btn-default" id="import_storage">
-					<span class="glyphicon glyphicon-import"></span> <span>导入</span>
-				</button>
-				<button class="btn btn-sm btn-default" id="export_storage">
-					<span class="glyphicon glyphicon-export"></span> <span>导出</span>
-				</button>
 			</div>
 			<div class="col-md-5"></div>
 		</div>
@@ -551,8 +590,16 @@
 								<label for="" class="control-label col-md-4 col-sm-4"> <span>所属公司：</span>
 								</label>
 								<div class="col-md-8 col-sm-8">
-									<input type="text" class="form-control" id="storage_repositoryID"
-										name="storage_repositoryID" placeholder="所属公司">
+									<select name="" id="supplier_selector" class="form-control">
+									</select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="" class="control-label col-md-4 col-sm-4"> <span>材料名称：</span>
+								</label>
+								<div class="col-md-8 col-sm-8">
+									<select name="" id="goods_selector" class="form-control">
+									</select>
 								</div>
 							</div>
 							<div class="form-group">
@@ -785,27 +832,29 @@
 				<!-- 模态框的内容 -->
 				<div class="row">
 					<div class="col-md-1 col-sm-1"></div>
-					<div class="col-md-8 col-sm-8">
+					<div class="col-md-10 col-sm-10">
 						<form class="form-horizontal" role="form" id="storage_form_edit"
 							style="margin-top: 25px">
 							<div class="form-group">
-								<label for="" class="control-label col-md-4 col-sm-4"> <span>材料ID：</span>
+								<label for="" class="control-label col-md-4 col-sm-4"> <span>材料名称：</span>
 								</label>
-								<div class="col-md-4 col-sm-4">
+								<div class="col-md-6 col-sm-6">
+									<input type="hidden" id="storage_goodsID_e">
 									<p id="storage_goodsID_edit" class="form-control-static"></p>
 								</div>
 							</div>
 							<div class="form-group">
-								<label for="" class="control-label col-md-4 col-sm-4"> <span>仓库ID：</span>
+								<label for="" class="control-label col-md-4 col-sm-4"> <span>公司名称：</span>
 								</label>
-								<div class="col-md-4 col-sm-4">
+								<div class="col-md-6 col-sm-6">
+									<input type="hidden" id="storage_repositoryID_e">
 									<p id="storage_repositoryID_edit" class="form-control-static"></p>
 								</div>
 							</div>
 							<div class="form-group">
 								<label for="" class="control-label col-md-4 col-sm-4"> <span>数量：</span>
 								</label>
-								<div class="col-md-8 col-sm-8">
+								<div class="col-md-6 col-sm-6">
 									<input type="text" class="form-control" id="storage_number_edit"
 										name="storage_number" placeholder="库存数量">
 								</div>

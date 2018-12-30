@@ -14,7 +14,7 @@
 		<result property="number" column="STOCKIN_NUMBER"/>
 		<result property="time" column="STOCKIN_TIME"/>
 		<result property="personInCharge" column="STOCKIN_PERSON"/>
-		<result property="repositoryID" column="STOCKIN_REPOSITORY_ID"/>
+		<result property="price" column="STOCKIN_PRICE"/>
 	</resultMap>
 	
 	<select id="selectAll" resultMap="stockInDO">
@@ -27,7 +27,7 @@
 			r.RECORD_NUMBER as STOCKIN_NUMBER,
 			r.RECORD_TIME as STOCKIN_TIME,
 			r.RECORD_PERSON as STOCKIN_PERSON,
-			r.RECORD_REPOSITORYID as STOCKIN_REPOSITORY_ID
+			r.PECORD_PRICE as STOCKIN_PRICE
 		from
 			wms_record_in r,wms_goods g,wms_supplier s
 		where
@@ -53,6 +53,25 @@
 			r.RECORD_GOODID = g.GOOD_ID and
 			r.RECORD_SUPPLIERID = #{supplierID}
 	</select>
+
+	<select id="selectBySupplierName" resultMap="stockInDO">
+		select
+			r.RECORD_ID as STOCKIN_ID,
+			r.RECORD_SUPPLIERID as STOCKIN_SUPPLIER_ID,
+			s.SUPPLIER_NAME as STOCKIN_SUPPLIER_NAME,
+			r.RECORD_GOODID as STOCKIN_GOOD_ID,
+			g.GOOD_NAME as STOCKIN_GOOD_NAME,
+			r.RECORD_NUMBER as STOCKIN_NUMBER,
+			r.RECORD_TIME as STOCKIN_TIME,
+			r.RECORD_PERSON as STOCKIN_PERSON,
+			r.PECORD_PRICE as STOCKIN_PRICE
+		from
+			wms_record_in r,wms_goods g,wms_supplier s
+		where
+			r.RECORD_SUPPLIERID = s.SUPPLIER_ID and
+			r.RECORD_GOODID = g.GOOD_ID and
+			s.SUPPLIER_NAME like concat(concat('%',#{supplierName}),'%')
+	</select>
 	
 	<select id="selectByGoodID" resultMap="stockInDO">
 		select
@@ -64,7 +83,6 @@
 			r.RECORD_NUMBER as STOCKIN_NUMBER,
 			r.RECORD_TIME as STOCKIN_TIME,
 			r.RECORD_PERSON as STOCKIN_PERSON,
-			r.RECORD_REPOSITORYID as STOCKIN_REPOSITORY_ID
 		from
 			wms_record_in r,wms_goods g,wms_supplier s
 		where
@@ -91,27 +109,9 @@
 			r.RECORD_GOODID = g.GOOD_ID and
 			r.RECORD_ID = #{id}
 	</select>
-	
-	<select id="selectByRepositoryID" resultMap="stockInDO">
-		select
-			r.RECORD_ID as STOCKIN_ID,
-			r.RECORD_SUPPLIERID as STOCKIN_SUPPLIER_ID,
-			s.SUPPLIER_NAME as STOCKIN_SUPPLIER_NAME,
-			r.RECORD_GOODID as STOCKIN_GOOD_ID,
-			g.GOOD_NAME as STOCKIN_GOOD_NAME,
-			r.RECORD_NUMBER as STOCKIN_NUMBER,
-			r.RECORD_TIME as STOCKIN_TIME,
-			r.RECORD_PERSON as STOCKIN_PERSON,
-			r.RECORD_REPOSITORYID as STOCKIN_REPOSITORY_ID
-		from
-			wms_record_in r,wms_goods g,wms_supplier s
-		where
-			r.RECORD_SUPPLIERID = s.SUPPLIER_ID and
-			r.RECORD_GOODID = g.GOOD_ID and
-			r.RECORD_REPOSITORYID = #{repositoryID}
-	</select>
 
-	<select id="selectByRepositoryIDAndDate" resultMap="stockInDO">
+
+	<select id="selectBySupplierIDAndDate" resultMap="stockInDO">
         select
             r.RECORD_ID as STOCKIN_ID,
             r.RECORD_SUPPLIERID as STOCKIN_SUPPLIER_ID,
@@ -121,14 +121,13 @@
             r.RECORD_NUMBER as STOCKIN_NUMBER,
             r.RECORD_TIME as STOCKIN_TIME,
             r.RECORD_PERSON as STOCKIN_PERSON,
-            r.RECORD_REPOSITORYID as STOCKIN_REPOSITORY_ID
         from
             wms_record_in r,wms_goods g,wms_supplier s
         where
             r.RECORD_SUPPLIERID = s.SUPPLIER_ID and
             r.RECORD_GOODID = g.GOOD_ID
-        <if test="repositoryID > 0">
-            and r.RECORD_REPOSITORYID = #{repositoryID}
+        <if test="supplierID > 0">
+            and r.RECORD_SUPPLIERID = #{supplierID}
         </if>
         <if test="startDate != null">
             and r.RECORD_TIME >= #{startDate}
@@ -137,10 +136,10 @@
             <![CDATA[and r.RECORD_TIME <= #{endDate}]]>
         </if>
 	</select>
-	
+
 	<insert id="insert">
-		insert into wms_record_in(RECORD_SUPPLIERID,RECORD_GOODID,RECORD_NUMBER,RECORD_TIME,RECORD_PERSON,RECORD_REPOSITORYID)
-		values(#{supplierID},#{goodID},#{number},#{time},#{personInCharge},#{repositoryID})
+		insert into wms_record_in(RECORD_SUPPLIERID,RECORD_GOODID,RECORD_NUMBER,RECORD_TIME,RECORD_PERSON,PECORD_PRICE)
+		values(#{supplierID},#{goodID},#{number},#{time},#{personInCharge},#{price})
 	</insert>
 	
 	<update id="update">

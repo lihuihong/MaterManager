@@ -2,7 +2,6 @@ $(function() {
 	submitPasswordModify();
 	menuClickAction();
 	welcomePageInit();
-	passwordModifyInit();
 	signOut();
 	homePage();
 });
@@ -107,7 +106,7 @@ function handleAjaxError(responseStatus){
 }
 
 // 初始密码修改
-function passwordModifyInit(){
+/*function passwordModifyInit(){
 	bootstrapValidatorInit();
 
 	// 是否弹出密码修改模态框
@@ -115,7 +114,7 @@ function passwordModifyInit(){
 	if (isPopPasswordModal == 'true') {
 		$('#init_password_modify').modal('show');
 	}
-}
+}*/
 
 // 输入校验初始化
 function bootstrapValidatorInit(){
@@ -174,14 +173,14 @@ function passwordEncrying(userID,password){
 // 密码修改提交
 function submitPasswordModify(){
 	$('#init_password_modify_submit').click(function(event) {
-		var userID = $('#userID').html();
+		var userName = $('#userName').html();
 		var oldPassword = $('#oldPassword').val();
 		var newPassword = $('#newPassword').val();
 		var rePassword = $('#newPassword_re').val();
 
-		oldPassword = passwordEncrying(userID, oldPassword);
-		newPassword = passwordEncrying(userID, newPassword);
-		rePassword = passwordEncrying(userID, rePassword);
+		oldPassword = passwordEncrying(userName, oldPassword);
+		newPassword = passwordEncrying(userName, newPassword);
+		rePassword = passwordEncrying(userName, rePassword);
 		var data = {
 				"oldPassword" : oldPassword,
 				"newPassword" : newPassword,

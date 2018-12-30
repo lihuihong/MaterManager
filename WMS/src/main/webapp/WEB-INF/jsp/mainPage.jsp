@@ -98,6 +98,33 @@ pageEncoding="UTF-8"%>
                         </div>
                     </div>
                 </shiro:hasRole>
+                <shiro:hasRole name="commonsAdmin">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a href="#collapse4" data-toggle="collapse" data-parent="#accordion"
+                                   class="parentMenuTitle collapseHead">基础数据</a>
+                                <div class="pull-right	">
+                                    <span class="caret"></span>
+                                </div>
+                            </h4>
+                        </div>
+                        <div id="collapse4" class="panel-collapse collapse collapseBody">
+                            <div class="panel-body">
+                                <ul class="list-group">
+                                    <li class="list-group-item">
+                                        <a href="javascript:void(0)" id="" class="menu_item"
+                                           name="pagecomponent/supplierManagementCommon.jsp">供应商信息管理</a>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <a href="javascript:void(0)" id="" class="menu_item"
+                                           name="pagecomponent/goodsManagementCommon.jsp">材料信息管理</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </shiro:hasRole>
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h4 class="panel-title">
@@ -114,19 +141,15 @@ pageEncoding="UTF-8"%>
                                 <shiro:hasRole name="commonsAdmin">
                                     <li class="list-group-item">
                                         <a href="javascript:void(0)" id="" class="menu_item"
-                                           name="pagecomponent/storageManagementCommon.jsp">库存查询</a>
+                                           name="pagecomponent/storageManagementCommon.jsp">库存详情</a>
                                     </li>
                                 </shiro:hasRole>
                                 <shiro:hasRole name="systemAdmin">
                                     <li class="list-group-item">
                                         <a href="javascript:void(0)" id="" class="menu_item"
-                                    name="pagecomponent/storageManagement.jsp">库存查询</a>
+                                    name="pagecomponent/storageManagement.jsp">库存详情</a>
                                     </li>
-                                    <li class="list-group-item">
-                                        <a href="javascript:void(0)" id=""
-                                           class="menu_item"
-                                           name="pagecomponent/stockRecordManagement.jsp">出入库记录</a>
-                                    </li>
+
                                 </shiro:hasRole>
                             </ul>
                         </div>
@@ -148,11 +171,15 @@ pageEncoding="UTF-8"%>
                                 <ul class="list-group">
                                     <li class="list-group-item">
                                         <a href="javascript:void(0)" id="" class="menu_item"
-                                           name="pagecomponent/stock-inManagement.jsp">材料租入</a>
+                                           name="pagecomponent/stock-inOutManagement.jsp">材料租入租出</a>
                                     </li>
                                     <li class="list-group-item">
                                         <a href="javascript:void(0)" id="" class="menu_item"
-                                           name="pagecomponent/stock-outManagement.jsp">材料租出</a>
+                                           name="pagecomponent/stock-inManagement.jsp">材料租入详情</a>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <a href="javascript:void(0)" id="" class="menu_item"
+                                           name="pagecomponent/stock-outManagement.jsp">材料租出详情</a>
                                     </li>
                                 </ul>
                             </shiro:hasRole>
@@ -160,11 +187,11 @@ pageEncoding="UTF-8"%>
                                 <ul class="list-group">
                                     <li class="list-group-item">
                                         <a href="javascript:void(0)" id="" class="menu_item"
-                                           name="pagecomponent/stock-inManagementCommon.jsp">材料租入</a>
+                                           name="pagecomponent/stock-inManagement.jsp">材料租入</a>
                                     </li>
                                     <li class="list-group-item">
                                         <a href="javascript:void(0)" id="" class="menu_item"
-                                           name="pagecomponent/stock-outManagementCommon.jsp">材料租出</a>
+                                           name="pagecomponent/stock-outManagement.jsp">材料租出</a>
                                     </li>
                                 </ul>
                             </shiro:hasRole>
@@ -346,11 +373,11 @@ pageEncoding="UTF-8"%>
                         <form action="" class="form-horizontal" style=""
                             role="form" id="form">
                             <div class="form-group">
-                                <label for="" class="control-label col-md-4 col-sm-4"> 用户ID: </label>
+                                <label for="" class="control-label col-md-4 col-sm-4"> 用户名: </label>
                                 <div class="col-md-6 col-sm-6">
                                     <span class="hidden" id="userID">${sessionScope.userInfo.userID }</span>
                                     <span class="hidden" id="isFirstLogin">${sessionScope.userInfo.firstLogin}</span>
-                                    <p class="form-control-static">${sessionScope.userInfo.userID }</p>
+                                    <p class="form-control-static" id="userName">${sessionScope.userInfo.userName }</p>
                                 </div>
                             </div>
 

@@ -37,7 +37,7 @@ import java.util.Map;
  * 用户账户请求 Handler
  *
  * @author Ken
- * @since 017/2/26.
+ * @since 2017/12/31.
  */
 @Controller
 @RequestMapping("/account")
@@ -90,15 +90,6 @@ public class AccountHandler {
                 UserInfoDTO userInfo = (UserInfoDTO) session.getAttribute("userInfo");
                 // 设置登陆IP
                 userInfo.setAccessIP(session.getHost());
-                // 查询并设置用户所属的仓库ID
-                List<RepositoryAdmin> repositoryAdmin = (List<RepositoryAdmin>) repositoryAdminManageService.selectByID(userInfo.getUserID()).get("data");
-                userInfo.setRepositoryBelong(-1);
-                if (!repositoryAdmin.isEmpty()) {
-                    Integer repositoryBelong = repositoryAdmin.get(0).getRepositoryBelongID();
-                    if (repositoryBelong != null) {
-                        userInfo.setRepositoryBelong(repositoryBelong);
-                    }
-                }
 
                 // 记录登陆日志
                 systemLogService.insertAccessRecord(userInfo.getUserID(), userInfo.getUserName(),
@@ -114,7 +105,7 @@ public class AccountHandler {
             } catch (AuthenticationException e) {
                 errorMsg = "authenticationError";
                 e.printStackTrace();
-            } catch (SystemLogServiceException | RepositoryAdminManageServiceException e) {
+            } catch (SystemLogServiceException e) {
                 errorMsg = "ServerError";
             } finally {
                 // 当登陆失败则清除session中的用户信息
